@@ -1,34 +1,33 @@
-version: '3.9'
-
 services:
   backend:
-    build: .
-    command: python manage.py runserver 127.0.0.1:8000
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: python /app/bmt/manage.py runserver 0.0.0.0:8000
+    container_name: bookmyticket
+    networks:
+      - host
     ports:
       - "8000:8000"
+    depends_on:
+      - db
     develop:
-      watch:
-        - action: sync+restart
-          path: .
-          target: .
-
+      watch: 
+        - path: .
+          action: sync+restart
+          target: /app/.
   db:
-    image: postgres
-    # restart: always
-    # set shared memory limit when using docker-compose
-    # shm_size: 128mb
-    # or set shared memory limit when deploy via swarm stack
-    #volumes:
-    #  - type: tmpfs
-    #    target: /dev/shm
-    #    tmpfs:
-    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    image: postgres:16
+    restart: always
+    container_name: dbbookmyticket
     environment:
-      POSTGRES_PASSWORD: /run/secrets/db_password
-      POSTGRES_USER: user
-      POSTGRES_DB: bmt
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    networks:
+      - host
+    ports:
+      - "5432:5432"
 
-
-secrets:
-   db_password:
-     file: db_password.txt
+networks:
+  host:
