@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: python /app/bmt/manage.py runserver 0.0.0.0:8000
+    container_name: bookmyticket
+    networks:
+      - host
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    develop:
+      watch: 
+        - path: .
+          action: sync+restart
+          target: /app/.
+  db:
+    image: postgres:16
+    restart: always
+    container_name: dbbookmyticket
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    networks:
+      - host
+    ports:
+      - "5432:5432"
+
+networks:
+  host:

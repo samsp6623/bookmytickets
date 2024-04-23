@@ -1,22 +1,14 @@
 # bookmytickets
 A Django app to book tickets for show
 
-
-# Environment Variable:
-export PGSERVICEFILE=~/.pg_service.conf
-export PGPASSFILE=~/.pgpass
-
+# Setup for Testing
 ```
-file: `.pgpass`
+# start django and db service
+docker compose up
 
-hostname:port:database:username:password
-```
+# allows fresh restart of the database every time
+docker compose down -volume
 
-```
-file: `~/.pg_service.conf`
-
-[my_service]
-host=hostname
-port=portnumber
-user=username
+# to keep container reload to any changes in project directory
+docker compose watch backend
 ```
