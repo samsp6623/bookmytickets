@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Show, ShowUser, Multiplex, Theater, Tarrif, Performance, Ticket
+from .models import Show, ShowUser, Multiplex, Theater, Tarrif, Performance, Ticket, SCategory
 # Register your models here.
 admin.site.register(Show)
 admin.site.register(ShowUser)
@@ -8,4 +8,5 @@ admin.site.register(Theater)
 admin.site.register(Tarrif)
 admin.site.register(Performance)
 admin.site.register(Ticket)
+admin.site.register(SCategory)
 

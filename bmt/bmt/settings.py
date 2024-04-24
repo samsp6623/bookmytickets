@@ -78,6 +78,7 @@ WSGI_APPLICATION = 'bmt.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+        # "NAME":"db.sqlite3",
         "OPTIONS": {
 
             "service": "bmt-database",
