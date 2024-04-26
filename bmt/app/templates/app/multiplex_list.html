@@ -1,0 +1,19 @@
+{% include 'base.html' %}
+{% block content %}
+<main class="container-fluid">
+    <h2>Find Nearest place to visit our Multiplex</h2>
+    <div class="myclass">
+        {% for mplex in object_list %}
+            <article>
+                <div class="perf">
+                    <h3><a href="{% url 'show-running' mplex.id %}">{{ mplex.address }}</a></h3>
+                    <p><small>Parking Spot: </small>{{ mplex.parking_spots }}</p>
+                    <p><small>Washrooms: </small>{{ mplex.washrooms }}</p>
+                    <p><small>Water Stations: </small>{{ mplex.drinking_water_stations }}</p>
+                    <p><small>Accessibility features: </small>{{ mplex.accessibility_features }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

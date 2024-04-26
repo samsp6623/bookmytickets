@@ -1,0 +1,16 @@
+{% include 'base.html' %}
+{% block content %}
+<main class="container-fluid">
+    <h2 class="mytitle">Select seat</h2>
+    <canvas></canvas>
+    <p id="selected-seat"></p>
+    <form action="." method="POST">
+        {% csrf_token %}
+        <p>Do you confirm to above seat selection?</p>
+        <button type="submit">Submit</button>
+        <button>Cancel</button>
+    </form>
+    <script src="{% static 'js/canvas.js' %}"></script>
+</main>
+{% endblock %}
+    

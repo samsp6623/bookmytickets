@@ -1,0 +1,18 @@
+{% include 'base.html' %}
+{% block content %}
+<main class="container-fluid">
+    <div class="grid">
+    <div></div>
+    <div>
+        <h2 class="mytitle">Confirm Logout</h2>
+        <form action="." method="POST">
+            {% csrf_token %}
+            <p>Are you sure want to logout?</p>
+            <button type="submit">Submit</button>
+            <button type="reset">Cancel</button>
+        </form>
+    </div>
+    <div></div>
+    </div>
+</main>
+{% endblock %}

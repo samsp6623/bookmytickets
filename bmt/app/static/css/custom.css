@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    padding: 15px 5px 0px 5px;
+}
+canvas {
+    border: 1px solid black;
+    background: cadetblue;
+}
+
+.myclass {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.perf {
+    max-width: 12rem;
+    margin: 15px;
+}

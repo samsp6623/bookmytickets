@@ -1,0 +1,18 @@
+{% include 'base.html' %}
+{% block content %}
+<main class="container-fluid">
+    <h2 class="mytitle">Past orders</h2>
+    {% for show in object_list %}
+        <ul>
+            <li>{{ forloop.counter }} {{ show }}</li>
+            <li>{{ show.theater.multiplex.address }}</li>
+            <li>{{ show.theater.kind }}</li>
+            <li>{{ show.theater.audio_features }}</li>
+            <li>{{ show.theater.screen_size }}</li>
+            <li>{{ show.performance.language }}</li>
+            <li>{{ show.performance.cover_picture }}</li>
+            <li>{{ show.performance.runtime }}</li>
+        </ul>
+    {% endfor %}
+</main>
+{% endblock %}

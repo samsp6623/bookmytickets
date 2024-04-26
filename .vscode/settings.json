@@ -12,7 +12,6 @@
   ],
   "python.analysis.inlayHints.variableTypes": true,
   "[python]": {
-      "editor.formatOnSave": true,
       "editor.defaultFormatter": "charliermarsh.ruff",
     },
 }

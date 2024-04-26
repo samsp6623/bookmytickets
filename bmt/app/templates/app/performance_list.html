@@ -1,0 +1,25 @@
+{% include 'base.html' %}
+{% block content %}
+<main class="container-fluid">
+<h2 class="mytitle">Shows currently running in Cinema</h2>
+<div class="myclass">
+    {% for performance in object_list %}
+        <article>
+            <div class="perf">
+            {% if performance.cover_picture %}
+            <img src={{ performance.cover_picture.url }} alt="{{performance.name}} Cover Page"></img>
+            {% endif %}
+            <hgroup>
+                <a href="{% url 'show-detail' performance.slugfield %}"><h2>{{ performance.name }}</h2></a>
+                <p>&#127758; {{ performance.language }}</p>
+            </hgroup>
+            <ul>
+                <p><strong>Starring:</strong> {{ performance.artist }}</p>
+                <p>&#128343; {{ performance.runtime }}</p>
+            </ul>
+            </div>
+        </article>
+    {% endfor %}
+</div>
+</main>
+{% endblock %}

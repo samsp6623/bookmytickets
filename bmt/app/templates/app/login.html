@@ -1,0 +1,21 @@
+{% include 'base.html' %}
+{% block content %}
+<main class="container-fluid">
+    <div class="grid">
+        <div></div>
+        <div>
+            <h2 class="mytitle">Login</h2>
+            <form action="." method="POST">
+                {% csrf_token %}
+                <fieldset>
+                    {{ form }}
+                    <small><a href="/password_reset">Forgot Password</a></small>
+                </fieldset>
+                <input type="submit" value="Submit"/>
+                <input type="reset" value="Reset"/>
+            </form>
+        </div>
+        <div></div>
+</div>
+</main>
+{% endblock %}
