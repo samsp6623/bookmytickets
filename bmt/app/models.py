@@ -1,15 +1,41 @@
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.db import models
-from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 # Create your models here.
-class ShowUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
-    loyalty_number = models.CharField(max_length=16, blank=True, null=True)
-    email_consent = models.BooleanField()
+class ShowUser(AbstractBaseUser, PermissionsMixin):
+    username = models.SlugField(max_length=32, unique=True)
+    email = models.EmailField(unique=True)
+    first_name = models.SlugField(max_length=32, blank=True, null=True)
+    last_name = models.CharField(max_length=32, blank=True, null=True)
+    cell_number = models.CharField(max_length=10, blank=True, null=True)
+    loyalty_number = models.IntegerField(blank=True, null=True)
+    email_consent = models.BooleanField(blank=True, null=True, default=False)
+    password = models.CharField(max_length=256)
+
+    is_active = models.BooleanField(blank=True, null=True, default=True)
+    is_staff = models.BooleanField(blank=True, null=True, default=False)
+    is_superuser = models.BooleanField(blank=True, null=True, default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    last_login = models.DateTimeField(auto_now=True)
+
+    USERNAME_FIELD = "email"
+    EMAIL_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
+
+    objects = UserManager()
 
     def __str__(self):
-        return self.user.username
+        return self.username
+
+    def get_full_name(self):
+        return (self.first_name + self.last_name).title()
+
+    def save(self, *args, **kwargs):
+        self.username = slugify(self.username)
+        super().save(*args, **kwargs)
 
 
 class Multiplex(models.Model):
@@ -44,7 +70,7 @@ class Theater(models.Model):
         return (
             self.theater_no + " "
             if self.theater_no
-            else "" + self.screen_size + " " + self.kind + " " + str(self.multiplex)
+            else "" + self.kind + " " + str(self.multiplex)
         )
 
 
@@ -53,12 +79,15 @@ class Performance(models.Model):
     artist = models.CharField(max_length=256)
     runtime = models.CharField(max_length=16)
     language = models.CharField(max_length=16)
-    cover_picture = models.ImageField(
-        upload_to="media/", max_length=128, blank=True, null=True
-    )
+    slugfield = models.SlugField(max_length=32, blank=True, null=True)
+    cover_picture = models.ImageField(max_length=128, blank=True, null=True)
 
     def __str__(self):
         return self.name.title()
+
+    def save(self, *args, **kwargs):
+        self.slugfield = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class SCategory(models.Model):
@@ -85,7 +114,7 @@ class Show(models.Model):
 
     def __str__(self):
         return (
-            self.date_time.strftime("%a %d %b %Y, %I:%M%p")
+            self.date_time.strftime("%a, %d %b %Y, %I:%M%p")
             + " | "
             + str(self.performance)
         )
@@ -98,9 +127,7 @@ class Tarrif(models.Model):
     rate = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return (
-            str(self.show) + " | " + str(self.seat_cateogry) + " | $" + str(self.rate)
-        )
+        return str(self.seat_cateogry)
 
     class Meta:
         constraints = [
@@ -121,7 +148,15 @@ class Ticket(models.Model):
     show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return str(self.tarrif) + " | " + self.seat + " | " + str(self.show.theater)
+        return (
+            str(self.show)
+            + " | "
+            + str(self.tarrif)
+            + " | "
+            + self.seat
+            + " | "
+            + str(self.show.theater)
+        )
 
     class Meta:
         constraints = [
