@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 from django.conf.global_settings import EMAIL_BACKEND, STATIC_ROOT
 
@@ -27,8 +28,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = os.environ.get("DEBUG", False)
 
-ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST")]
+ALLOWED_HOSTS = ["bookmytickets.onrender.com", "0.0.0.0"]
 
 # Application definition
 
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -75,24 +78,24 @@ WSGI_APPLICATION = "bmt.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-if DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "db.sqlite3",
-        }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "db.sqlite3",
+#     }
+# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("NAME"),
+        # "USER": os.environ.get("USER"),
+        # "PASSWORD": os.environ.get("POSTGRESPW"),
+        # "HOST": os.environ.get("HOST"),
+        # "OPTIONS": {"sslmode": "require"},
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("NAME"),
-            "USER": os.environ.get("USER"),
-            "HOST": os.environ.get("HOST"),
-            "PORT": os.environ.get("PORT"),
-            "PASSWORD": os.environ.get("POSTGRESPW"),
-        }
-    }
+}
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 # Password validation
@@ -131,9 +134,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 STATIC_URL = "static/"
+STATIC_ROOT = "static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_ROOT = str(Path(os.getcwd()).joinpath("app"))
 MEDIA_URL = "media/"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
