@@ -1,37 +1,20 @@
-{% include 'base.html' %}
-{% block content %}
+{% include 'base.html' %} {% block content %}
 <main class="container-fluid">
+  <div class="myclass">
     <article>
-        <hgroup>
-            <h2>User Profile</h2>
-        </hgroup>
-        {{ object.as_p }}
-        <button class="modal-is-opening"></button>
-        <dialog open>
-            <article>
-                <header>
-                    <button aria-label="Close" rel="prev" class="modal-is-closing"></button>
-                    <p>
-                        <strong>Update the login details</strong>
-                    </p>
-                </header>
-                <form method="POST" action=".">
-                    {% csrf_token %}
-                    <fieldset>
-                        <label>Username: <input type="text" name="text" placeholder="Disabled" aria-label="Disabled input" value="{{ object.username }}"></label>
-                        <label>Email: <input type="email" name="text" placeholder="Disabled" aria-label="Disabled input" value="{{ object.email}}"/></label>
-                        <label>First Name: <input type="text" name="text" placeholder="Disabled" aria-label="Disabled input" value="{{ object.first_name }}"/></label>
-                        <label>Last Name: <input type="text" name="text" placeholder="Disabled" aria-label="Disabled input" value="{{ object.last_name }}"/></label>
-                        <label>Cell Number: <input type="text" name="text" placeholder="Disabled" aria-label="Disabled input" value="{{ object.cell_number }}"/></label>
-                        <label>Email Consent: <input type="checkbox" name="text" placeholder="Disabled" aria-label="Disabled input" value="{{ object.email_consent }}"/></label>
-                        <label>Last Login: <input type="text" name="text" placeholder="Disabled" aria-label="Disabled input" value="{{ object.last_login }}" disabled/></label>
-                    </fieldset>
-                    <footer>
-                        <button>Submit</button>
-                    </footer>
-                </form>
-            </article>
-        </dialog>
+      <hgroup>
+        <h2>User Profile</h2>
+      </hgroup>
+      <div class="profile">
+        <fieldset>
+          <form method="post">
+            {% csrf_token %} {{ form.as_p }}
+            <input type="submit" value="Update" />
+            <button type="Submit" id="edit-button">Submit</button>
+          </form>
+        </fieldset>
+      </div>
     </article>
+  </div>
 </main>
 {% endblock %}

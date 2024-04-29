@@ -8,7 +8,7 @@
             <form action="." method="POST">
                 {% csrf_token %}
                 <fieldset>
-                    {{ form }}
+                    {{ form.as_p }}
                     <small><a href="/password_reset">Forgot Password</a></small>
                 </fieldset>
                 <input type="submit" value="Submit"/>

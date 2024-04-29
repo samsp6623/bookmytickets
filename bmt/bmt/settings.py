@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = "django-insecure-x78yh46iz+q4^w_j(o4knbvlfl*$+3me$m$wq4zt%^pi+3b9o4"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST")]
 
 # Application definition
 
@@ -75,17 +75,24 @@ WSGI_APPLICATION = "bmt.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        # "NAME": "db.sqlite3",
-        "OPTIONS": {
-            "service": "bmt-database",
-        },
-        "PASSWORD": "mysecretpassword",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("NAME"),
+            "USER": os.environ.get("USER"),
+            "HOST": os.environ.get("HOST"),
+            "PORT": os.environ.get("PORT"),
+            "PASSWORD": os.environ.get("POSTGRESPW"),
+        }
+    }
 
 
 # Password validation
@@ -132,4 +139,4 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

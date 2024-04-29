@@ -4,7 +4,7 @@ body {
 }
 canvas {
     border: 1px solid black;
-    background: cadetblue;
+    background: rgb(175, 163, 220);
 }
 
 .myclass {

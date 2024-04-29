@@ -13,10 +13,8 @@
                 <a href="{% url 'show-detail' performance.slugfield %}"><h4>{{ performance.name }}</h4></a>
                 <p>&#127758; {{ performance.language }}</p>
             </hgroup>
-            <ul>
                 <p><strong>Starring:</strong> {{ performance.artist }}</p>
                 <p>&#128343; {{ performance.runtime }}</p>
-            </ul>
             </div>
         </article>
     {% endfor %}

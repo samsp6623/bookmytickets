@@ -5,19 +5,44 @@ from django.contrib.auth.forms import (
     AuthenticationForm,
     PasswordChangeForm,
     PasswordResetForm,
+    UserCreationForm,
 )
+from django.contrib.auth.views import (
+    PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
+)
+
+from .forms import BookTicketForm, MyUserCreationForm
+from .models import Performance, Show, ShowUser, Multiplex, Ticket
 from django.db.models import QuerySet
 from django.db.models.base import Model as Model
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import DetailView, ListView
+from django.views.generic import ListView, UpdateView
 
-from .models import Performance, Show, ShowUser, Theater, Multiplex, Ticket
 # from django.http import HttpResponse
 
 
 # Create your views here.
 def home(request):
     return render(request, "app/home.html")
+
+
+class MyPasswordResetView(PasswordResetView):
+    template_name = "app/password_reset.html"
+
+
+class MyPasswordResetDoneView(PasswordResetDoneView):
+    template_name = "app/password_reset_done.html"
+
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = "app/password_reset_confirm.html"
+
+
+class MyPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = "app/password_reset_complete.html"
 
 
 class MultiplexListView(ListView):
@@ -48,16 +73,33 @@ class ShowListView(ListView):
             )
 
 
-class ShowUserDetailView(DetailView):
+class ShowUserUpdateView(UpdateView):
     model = ShowUser
+    fields: list[str] = [
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "cell_number",
+        "loyalty_number",
+        "email_consent",
+    ]
+    template_name = "app/showuser_detail.html"
 
     def get_object(self, *args, **kwargs) -> Model:
         username = self.kwargs.get("username")
         return get_object_or_404(ShowUser, username=username)
 
 
-def booking(request):
-    return render(request, "app/booking.html")
+def booking(request, *args, **kwargs):
+    form = BookTicketForm()
+    show = Show.objects.get(id=kwargs["pk"])
+    # if request.method == "POST":
+    #     if form.is_valid():
+    #         import pdb
+
+    #         pdb.set_trace()
+    return render(request, "app/booking.html", {"form": form, "show": show})
 
 
 class PastTicketListsViews(ListView):
@@ -88,3 +130,16 @@ def logout_user(request):
         logout(request)
         return redirect(to="home")
     return render(request, "app/logout.html")
+
+
+def signup(request):
+    if request.method == "POST":
+        form = MyUserCreationForm(request.POST)
+        if not form.is_valid():
+            return render(request, "app/signup.html", {"form": form})
+        username = form.cleaned_data["username"]
+        password = form.cleaned_data["password1"]
+        ShowUser.objects.create_user(username, password=password)
+        return redirect("login")
+    form = MyUserCreationForm()
+    return render(request, "app/signup.html", context={"form": form})

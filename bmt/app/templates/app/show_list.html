@@ -8,12 +8,14 @@
         <article>
                 <div class="perf">
                 <img src="{{show.performance.cover_picture.url}}" alt="Performance Cover Page"></img>
-                <p class="pico-color-yellow-100"><b>{{ show.date_time }}</b></p>
+                <p><b>{{ show.date_time }}</b></p>
                 <p>{{ show.theater.multiplex.address }}</p>
-                <p class="pico-color-yellow-100">{{ show.theater.kind }} {{ show.theater.screen_size }} {{ show.theater.audio_features }}</p>
+                <p>{{ show.theater.kind }} {{ show.theater.screen_size }} {{ show.theater.audio_features }}</p>
                 <p>{{ show.performance.language }}</p>
                 <p>{{ show.performance.runtime }}</p>
-                <button class="pico-background-yellow-300">Book this Show</button>
+                <a href="{% url 'book' show.id %}">
+                    <button class="pico-background-violet-600">Book your tickets</button>
+                </a>
             </div>
         </article>
         {% endfor %}

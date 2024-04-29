@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Get ready for &#127916;&#127871; time!</title>
+    <title>Get ready for &#127917;&#127916;&#127871; time!</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     {% load static %}
     <link
@@ -23,9 +23,12 @@
 <body>
     <nav>
         <ul>
-            <li><img src="{% static 'images/logo-no-background.png' %}" alt="DinePlex Logo" width="100px"></li>
+            <a href="{% url 'home' %}">
+                <li><img src="{% static 'images/logo-no-background.png' %}" alt="DinePlex Logo" width="100px"></li>
+            </a>
         </ul>
         <ul>
+            <li><button name="opt-in" id="light-mode" type="button">&#128161;</button></li>
             <li>
                 <a href="/locations">Locations</a>
             </li>
@@ -34,7 +37,7 @@
             </li>
             {% if request.user.is_authenticated %}
             <li>
-                <a href="/pastorders">Dashboard</a>                
+                <a href="/pastorders">Past Orders</a>                
             </li>
             <li>
                 <a href="{% url 'profile' request.user %}">Profile</a>
@@ -49,10 +52,11 @@
             <li>
                 <a href="/signup">Sign Up</a>
             </li>
+            {% endif %}
         </ul>
-        {% endif %}
     </nav>
-        {% block content %}
-        {% endblock %}
+    {% block content %}
+    {% endblock %}
+    <script src="{% static  'js/custom.js' %}"></script>
 </body>
 </html>

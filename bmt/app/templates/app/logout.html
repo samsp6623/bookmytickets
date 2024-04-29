@@ -9,7 +9,7 @@
             {% csrf_token %}
             <p>Are you sure want to logout?</p>
             <button type="submit">Submit</button>
-            <button type="reset">Cancel</button>
+            <a href="{% url 'performances' %}"><button>Cancel</button></a>
         </form>
     </div>
     <div></div>

@@ -21,9 +21,9 @@ class ShowUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "username"
     EMAIL_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = []
 
     objects = UserManager()
 
@@ -80,13 +80,15 @@ class Performance(models.Model):
     runtime = models.CharField(max_length=16)
     language = models.CharField(max_length=16)
     slugfield = models.SlugField(max_length=32, blank=True, null=True)
-    cover_picture = models.ImageField(max_length=128, blank=True, null=True)
+    cover_picture = models.ImageField(
+        upload_to="media/", max_length=128, blank=True, null=True
+    )
 
     def __str__(self):
         return self.name.title()
 
     def save(self, *args, **kwargs):
-        self.slugfield = slugify(self.name)
+        self.slugfield = slugify(self.name)[0:10]
         super().save(*args, **kwargs)
 
 
