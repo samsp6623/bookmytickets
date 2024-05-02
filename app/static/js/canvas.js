@@ -49,20 +49,20 @@ function getJSON(elid) {
 }
 
 
-var SIZE = 75;
-canvas.width = 16 * SIZE;
-canvas.height = 9 * SIZE;
+var SIZE = window.innerWidth;
+canvas.width = 0.625 * SIZE;
+canvas.height = 0.35 * SIZE;
 
 var ROW_NAME = "";
 var PREP_SEATS_LAYOUT = {}
 // creates the object to represent data friendlier format to render
 for (var i = 0; i < schema["seats"].length; i++) {
-    if (schema["seats"][i][0] != ROW_NAME) {
+    if (!Object.hasOwn(PREP_SEATS_LAYOUT, schema["seats"][i][0])) {
         ROW_NAME = schema["seats"][i][0];
         PREP_SEATS_LAYOUT[ROW_NAME] = [];
         PREP_SEATS_LAYOUT[ROW_NAME].push(schema["seats"][i]);
     } else {
-        PREP_SEATS_LAYOUT[ROW_NAME].push(schema["seats"][i]);
+        PREP_SEATS_LAYOUT[schema["seats"][i][0]].push(schema["seats"][i]);
     }
 }
 
@@ -137,3 +137,51 @@ canvas.addEventListener("click", function(event){
     }
 })
 
+var general = document.getElementById("general");
+var senior = document.getElementById("senior");
+var children = document.getElementById("children");
+
+const form = document.querySelector('form');
+form.addEventListener('submit', function(event) {
+    gen = parseInt(general.value);
+    sen = parseInt(senior.value);
+    cld = parseInt(children.value);
+    if ((gen+sen+cld) != SELECTED_SEAT.length) {
+        alert("Please make sure that seats selected and number of guests are same.")
+        event. preventDefault();
+    }
+    if (SELECTED_SEAT.length == 0) {
+        alert("Atleast one ticket has to be selected.")
+        event. preventDefault();
+    }
+})
+var grate = document.getElementById("rate_general");
+var srate = document.getElementById("rate_senior");
+var crate = document.getElementById("rate_children");
+var gbill = document.getElementById("ticket_general");
+var sbill = document.getElementById("ticket_senior");
+var cbill = document.getElementById("ticket_children");
+var taxbill = document.getElementById("ticket_tax");
+var totalbill = document.getElementById("total");
+var netbill = document.getElementById("net-total");
+
+function updateBill(event) {
+    console.log("hey", parseInt(event.target.value))
+    if(event.target.id == "general") {
+        gbill.innerText = event.target.valueAsNumber;
+    } else if (event.target.id == "senior") {
+        sbill.innerText = event.target.valueAsNumber;
+    } else {
+        cbill.innerText = event.target.valueAsNumber;
+    }
+    let total_tax = (parseFloat(grate.innerText)*parseFloat(general.value) +
+        parseFloat(srate.innerText)*parseFloat(senior.value) +
+        parseFloat(crate.innerText)*parseFloat(children.value))
+    totalbill.innerText = total_tax.toFixed(2);
+    taxbill.innerText = (0.135 * parseFloat(totalbill.innerText)).toFixed(2);
+    netbill.innerText = (parseFloat(taxbill.innerText) + total_tax).toFixed(2);
+}
+
+general.addEventListener("change", updateBill);
+senior.addEventListener("change", updateBill);
+children.addEventListener("change", updateBill);

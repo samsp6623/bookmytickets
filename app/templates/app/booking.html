@@ -7,7 +7,43 @@
   </p>
   <p id="seats-occupied" style="display: none">{{ show.seats_occupied }}</p>
   <form action="{% url 'book' show.id %}" method="POST">
-    {% csrf_token %} {{ form }}
+    {% csrf_token %}
+    <label for="selected-seat">Seat(s) selected:</label>
+    <input type="text" name="seat" id="selected-seat" readonly>
+    <br />
+    <h2 class="mytitle">Select Tickets for</h2>
+    {% for i in tarrif %}
+    <label>{{i.seat_category}} : $<b id="rate_{{i.seat_category|lower}}">{{ i.rate }}</b></label>
+    {% if i.seat_category|lower == "general" %}
+    <input type="number" id="general" name="general" min="0" value="0" required />
+    {% elif i.seat_category|lower == "senior" %}
+    <input type="number" id="senior" min="0" value="0" required />
+    {% elif i.seat_category|lower == "children" %}
+    <input type="number" id="children" min="0" value="0" required />
+    {% endif %}
+    {% endfor %}
+    <article>
+      <h2 class="mytitle">Review order</h2>
+      <h4>{{show.performance.name}}</h4>
+      {% for m in tarrif %}
+      <p>{{ m.seat_category}} Ticket(s): <b id="ticket_{{m.seat_category|lower}}">0</b> x ${{m.rate}}</p>
+      {% endfor %}
+      <p>Total Before Tax: $<b id="total">0</b></p>
+      <p>Tax(es): $<b id="ticket_tax">0</b></p>
+      <p>Total Payable: $<b id="net-total">0</b></p>
+    </article>
+    <article>
+      <h2>Payment Details</h2>
+      <label>Credit Card No.</label>
+      <input type="text" maxlength="16" minlength="16" name="creditcard" required value="9999888877776666">
+      <label>Security Code</label>
+      <input type="password" maxlength="3" minlength="3" name="seccode" required value="999">
+      <label>Expiry Date (Month/Year)</label>
+      <input type="month" required name="expdate" value="2029-06">
+      <label>Postal Code</label>
+      <input type="text" maxlength="6" minlength="6" required name="postalcode" value="M9Z1P4">
+    </article>
+    
     <button type="submit">Submit</button>
     <button>Cancel</button>
   </form>

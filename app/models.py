@@ -13,7 +13,6 @@ class ShowUser(AbstractBaseUser, PermissionsMixin):
     cell_number = models.CharField(max_length=10, blank=True, null=True)
     loyalty_number = models.IntegerField(blank=True, null=True)
     email_consent = models.BooleanField(blank=True, null=True, default=False)
-    password = models.CharField(max_length=256)
 
     is_active = models.BooleanField(blank=True, null=True, default=True)
     is_staff = models.BooleanField(blank=True, null=True, default=False)
@@ -68,7 +67,7 @@ class Theater(models.Model):
 
     def __str__(self):
         return (
-            self.theater_no + " "
+            (self.theater_no + " ")
             if self.theater_no
             else "" + self.kind + " " + str(self.multiplex)
         )
@@ -111,7 +110,7 @@ class Show(models.Model):
         on_delete=models.DO_NOTHING,
     )
     theater = models.ForeignKey(Theater, on_delete=models.DO_NOTHING)
-    seats_occupied = models.JSONField(null=True)
+    seats_occupied = models.JSONField(null=False, default=dict)
     seat_category = models.ManyToManyField(SCategory, through="Tarrif")
 
     def __str__(self):
@@ -124,17 +123,26 @@ class Show(models.Model):
 
 class Tarrif(models.Model):
     show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
-    seat_cateogry = models.ForeignKey(SCategory, on_delete=models.DO_NOTHING)
+    seat_category = models.ForeignKey(SCategory, on_delete=models.DO_NOTHING)
     theater = models.ForeignKey(Theater, on_delete=models.DO_NOTHING)
     rate = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return str(self.seat_cateogry)
+        return (
+            "$"
+            + str(self.rate)
+            + " "
+            + str(self.seat_category)
+            + " "
+            + str(self.show)
+            + " "
+            + str(self.theater)
+        )
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["show", "theater", "seat_cateogry"],
+                fields=["show", "theater", "seat_category"],
                 name="uni_to_theater_show",
                 violation_error_message="""The tarrif rate for selected Show 
                 and Theater has been defined already.""",
@@ -145,9 +153,12 @@ class Tarrif(models.Model):
 class Ticket(models.Model):
     date_time = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(ShowUser, on_delete=models.DO_NOTHING)
-    tarrif = models.ForeignKey(Tarrif, on_delete=models.DO_NOTHING)
-    seat = models.CharField(max_length=4)
+    seat = models.CharField(max_length=256)
     show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
+    tarrif = models.ForeignKey(
+        Tarrif,
+        on_delete=models.DO_NOTHING,
+    )
 
     def __str__(self):
         return (

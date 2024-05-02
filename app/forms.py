@@ -56,17 +56,45 @@ class MyUserCreationForm(UserCreationForm):
 opts = SCategory.opts
 
 
-class SeatNosField(forms.IntegerField):
-    def __init__(self, **kwargs):
-        super().__init__(initial=0, min_value=0, **kwargs, validators=[is_non_zero_int])
-
-
 class BookTicketForm(ModelForm):
-    gen_seat = SeatNosField()
-    sen_seat = SeatNosField()
-    cld_seat = SeatNosField()
+    general = forms.IntegerField()
+    senior = forms.IntegerField()
+    children = forms.IntegerField()
     seat = forms.CharField(widget=forms.TextInput(attrs={"id": "selected-seat"}))
+    creditcard = forms.CharField()
+    seccode = forms.CharField()
+    expdate = forms.DateTimeField(input_formats="%Y-%m")
+    postalcode = forms.CharField()
+
+    def clean_creditcard(self):
+        if self.cleaned_data["creditcard"] == "9999888877776666":
+            return self.cleaned_data["creditcard"]
+        raise ValidationError("Payment Failed")
+
+    def clean_expdate(self):
+        if self.cleaned_data["expdate"] == "2029-06":
+            return self.cleaned_data["expdate"]
+        raise ValidationError("Payment Failed")
+
+    def clean_seccode(self):
+        if self.cleaned_data["seccode"] == "999":
+            return self.cleaned_data["seccode"]
+        raise ValidationError("Payment Failed")
+
+    def clean_postalcode(self):
+        if self.cleaned_data["postalcode"] == "M9Z1P4":
+            return self.cleaned_data["postalcode"]
+        raise ValidationError("Payment Failed")
 
     class Meta:
         model = Ticket
-        fields = ["seat", "gen_seat", "sen_seat", "cld_seat"]
+        fields = [
+            "seat",
+            "general",
+            "senior",
+            "children",
+            "creditcard",
+            "seccode",
+            "expdate",
+            "postalcode",
+        ]

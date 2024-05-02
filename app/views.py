@@ -3,9 +3,6 @@ from typing import Any
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import (
     AuthenticationForm,
-    PasswordChangeForm,
-    PasswordResetForm,
-    UserCreationForm,
 )
 from django.contrib.auth.views import (
     PasswordResetCompleteView,
@@ -15,7 +12,7 @@ from django.contrib.auth.views import (
 )
 
 from .forms import BookTicketForm, MyUserCreationForm
-from .models import Performance, Show, ShowUser, Multiplex, Ticket
+from .models import Performance, Show, ShowUser, Multiplex, Tarrif, Ticket
 from django.db.models import QuerySet
 from django.db.models.base import Model as Model
 from django.shortcuts import get_object_or_404, redirect, render
@@ -93,13 +90,18 @@ class ShowUserUpdateView(UpdateView):
 
 def booking(request, *args, **kwargs):
     form = BookTicketForm()
+    tarrif = Tarrif.objects.filter(show_id=kwargs["pk"])
     show = Show.objects.get(id=kwargs["pk"])
-    # if request.method == "POST":
-    #     if form.is_valid():
-    #         import pdb
-
-    #         pdb.set_trace()
-    return render(request, "app/booking.html", {"form": form, "show": show})
+    if request.method == "POST":
+        form = BookTicketForm(request.POST)
+        if form.is_valid():
+            return redirect("home")
+        return render(
+            request, "app/booking.html", {"form": form, "show": show, "tarrif": tarrif}
+        )
+    return render(
+        request, "app/booking.html", {"form": form, "show": show, "tarrif": tarrif}
+    )
 
 
 class PastTicketListsViews(ListView):
