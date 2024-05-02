@@ -136,7 +136,8 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = "static/"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-MEDIA_ROOT = str(Path(os.getcwd()).joinpath("app"))
+MEDIA_ROOT = BASE_DIR / "app"
+# MEDIA_ROOT = str(Path(os.getcwd()).joinpath("app"))
 MEDIA_URL = "media/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

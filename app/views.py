@@ -1,6 +1,7 @@
 from re import L
 from typing import Any
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
     AuthenticationForm,
 )
@@ -88,6 +89,7 @@ class ShowUserUpdateView(UpdateView):
         return get_object_or_404(ShowUser, username=username)
 
 
+@login_required
 def booking(request, *args, **kwargs):
     form = BookTicketForm()
     tarrif = Tarrif.objects.filter(show_id=kwargs["pk"])
