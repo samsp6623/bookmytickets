@@ -7,7 +7,7 @@ from django.utils.text import slugify
 # Create your models here.
 class ShowUser(AbstractBaseUser, PermissionsMixin):
     username = models.SlugField(max_length=32, unique=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     first_name = models.SlugField(max_length=32, blank=True, null=True)
     last_name = models.CharField(max_length=32, blank=True, null=True)
     cell_number = models.CharField(max_length=10, blank=True, null=True)
