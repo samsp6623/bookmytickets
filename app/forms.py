@@ -57,32 +57,40 @@ opts = SCategory.opts
 
 
 class BookTicketForm(ModelForm):
-    general = forms.IntegerField()
-    senior = forms.IntegerField()
-    children = forms.IntegerField()
+    general = forms.IntegerField(required=False, min_value=0)
+    senior = forms.IntegerField(required=False, min_value=0)
+    children = forms.IntegerField(required=False, min_value=0)
     seat = forms.CharField(widget=forms.TextInput(attrs={"id": "selected-seat"}))
     creditcard = forms.CharField()
     seccode = forms.CharField()
-    expdate = forms.DateTimeField(input_formats="%Y-%m")
+    expdate = forms.DateField(
+        initial="2029-06",
+        widget=forms.DateInput(format="%Y-%m"),
+        input_formats=["%Y-%m"],
+    )
     postalcode = forms.CharField()
 
-    def clean_creditcard(self):
-        if self.cleaned_data["creditcard"] == "9999888877776666":
-            return self.cleaned_data["creditcard"]
-        raise ValidationError("Payment Failed")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["expdate"].widget.input_type = "month"
 
     def clean_expdate(self):
-        if self.cleaned_data["expdate"] == "2029-06":
-            return self.cleaned_data["expdate"]
-        raise ValidationError("Payment Failed")
+        data = self.cleaned_data.get("expdate").strftime("%Y-%m")
+        if data == "2029-06":
+            self.cleaned_data["expdate"] = data
+            return data
+        raise ValidationError("Enter Expiry date in `YYYY-MM` format.")
 
     def clean_seccode(self):
-        if self.cleaned_data["seccode"] == "999":
+        if re.fullmatch("[0-9]{3}", self.cleaned_data.get("seccode", "1234")) != None:
             return self.cleaned_data["seccode"]
-        raise ValidationError("Payment Failed")
+        raise ValidationError("Numbers of 3 digit are only allowed.")
 
     def clean_postalcode(self):
-        if self.cleaned_data["postalcode"] == "M9Z1P4":
+        if (
+            re.fullmatch("([A-Z][0-9]){3}", self.cleaned_data.get("postalcode", "L2K"))
+            is not None
+        ):
             return self.cleaned_data["postalcode"]
         raise ValidationError("Payment Failed")
 

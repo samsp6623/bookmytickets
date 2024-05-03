@@ -1,6 +1,6 @@
 // Gets the data of the seat available and seats occupied for show
 schema = getJSON("seats-available")
-seats_occ = getJSON("seats-occupied")
+seats_occ = getJSON("seats-occupied")["seats"]
 
 var canvas = document.querySelector("canvas")
 var ctx = canvas.getContext("2d")

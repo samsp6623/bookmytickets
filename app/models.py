@@ -103,6 +103,10 @@ class SCategory(models.Model):
         return self.opts[self.scat]
 
 
+def init_json():
+    return {"seats": []}
+
+
 class Show(models.Model):
     date_time = models.DateTimeField()
     performance = models.ForeignKey(
@@ -110,7 +114,7 @@ class Show(models.Model):
         on_delete=models.DO_NOTHING,
     )
     theater = models.ForeignKey(Theater, on_delete=models.DO_NOTHING)
-    seats_occupied = models.JSONField(null=False, default=dict)
+    seats_occupied = models.JSONField(null=False, blank=True, default=init_json)
     seat_category = models.ManyToManyField(SCategory, through="Tarrif")
 
     def __str__(self):
@@ -155,10 +159,10 @@ class Ticket(models.Model):
     user = models.ForeignKey(ShowUser, on_delete=models.DO_NOTHING)
     seat = models.CharField(max_length=256)
     show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
-    tarrif = models.ForeignKey(
-        Tarrif,
-        on_delete=models.DO_NOTHING,
-    )
+    # tarrif = models.ForeignKey(
+    #     Tarrif,
+    #     on_delete=models.DO_NOTHING,
+    # )
 
     def __str__(self):
         return (

@@ -17,9 +17,9 @@
     {% if i.seat_category|lower == "general" %}
     <input type="number" id="general" name="general" min="0" value="0" required />
     {% elif i.seat_category|lower == "senior" %}
-    <input type="number" id="senior" min="0" value="0" required />
+    <input type="number" id="senior" name="senior" min="0" value="0" required />
     {% elif i.seat_category|lower == "children" %}
-    <input type="number" id="children" min="0" value="0" required />
+    <input type="number" id="children" name="children" min="0" value="0" required />
     {% endif %}
     {% endfor %}
     <article>
@@ -38,8 +38,8 @@
       <input type="text" maxlength="16" minlength="16" name="creditcard" required value="9999888877776666">
       <label>Security Code</label>
       <input type="password" maxlength="3" minlength="3" name="seccode" required value="999">
-      <label>Expiry Date (Month/Year)</label>
-      <input type="month" required name="expdate" value="2029-06">
+        <label>Expiry Date (Month/Year)</label>
+        {{ form.expdate }}
       <label>Postal Code</label>
       <input type="text" maxlength="6" minlength="6" required name="postalcode" value="M9Z1P4">
     </article>

@@ -31,4 +31,5 @@ urlpatterns = [
         views.MyPasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path("mytest/", views.test),
 ]
