@@ -26,10 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 # DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ["bookmytickets.onrender.com", "0.0.0.0"]
+CSRF_TRUSTED_ORIGINS = ["https://bookmytickets.onrender.com"]
 
 # Application definition
 
