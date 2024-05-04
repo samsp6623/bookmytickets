@@ -29,6 +29,9 @@ class ShowUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+    def get_absolute_url(self):
+        return f"/profile/{self.username}/"
+
     def get_full_name(self):
         return (self.first_name + self.last_name).title()
 
@@ -151,21 +154,9 @@ class Ticket(models.Model):
     user = models.ForeignKey(ShowUser, on_delete=models.DO_NOTHING)
     seat = models.CharField(max_length=256)
     show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
-    # tarrif = models.ForeignKey(
-    #     Tarrif,
-    #     on_delete=models.DO_NOTHING,
-    # )
 
     def __str__(self):
-        return (
-            str(self.show)
-            + " | "
-            + str(self.tarrif)
-            + " | "
-            + self.seat
-            + " | "
-            + str(self.show.theater)
-        )
+        return str(self.show) + " " + self.seat + " " + str(self.show.theater)
 
     class Meta:
         constraints = [
@@ -174,5 +165,31 @@ class Ticket(models.Model):
                 name="uni_seat_for_ticket",
                 violation_error_message="""This seat has already been sold. 
                 Please select other seat.""",
+            )
+        ]
+
+
+class Order(models.Model):
+    date_time = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(ShowUser, on_delete=models.DO_NOTHING)
+    seat = models.CharField(max_length=256)
+    show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
+    general = models.IntegerField(default=0)
+    senior = models.IntegerField(default=0)
+    children = models.IntegerField(default=0)
+    total_b4_tax = models.FloatField(default=0.00)
+    total_tax = models.FloatField(default=0.00)
+    net_total = models.FloatField(default=0.00)
+
+    def __str__(self):
+        return str(self.show) + " " + self.seat + " " + str(self.show.theater)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["show", "seat"],
+                name="unique_seat_for_ticket",
+                violation_error_message="""This seat has already been sold. 
+                Please select another seat.""",
             )
         ]

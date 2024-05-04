@@ -109,7 +109,7 @@ for (const [k,v] of Object.entries(PREP_SEATS_LAYOUT)) {
 }
 
 var SELECTED_SEAT = []
-let it = document.getElementById("selected-seat")
+let it = document.getElementById("id_seat")
 canvas.addEventListener("click", function(event){
     // Check if the seat was clicked
     var seat = SEATS.filter((s) => {
@@ -137,9 +137,9 @@ canvas.addEventListener("click", function(event){
     }
 })
 
-var general = document.getElementById("general");
-var senior = document.getElementById("senior");
-var children = document.getElementById("children");
+var general = document.getElementById("id_general");
+var senior = document.getElementById("id_senior");
+var children = document.getElementById("id_children");
 
 const form = document.querySelector('form');
 form.addEventListener('submit', function(event) {
@@ -161,25 +161,38 @@ var crate = document.getElementById("rate_children");
 var gbill = document.getElementById("ticket_general");
 var sbill = document.getElementById("ticket_senior");
 var cbill = document.getElementById("ticket_children");
-var taxbill = document.getElementById("ticket_tax");
-var totalbill = document.getElementById("total");
-var netbill = document.getElementById("net-total");
+var totalbill = document.getElementsByClassName("total_b4_tax");
+var taxbill = document.getElementsByClassName("total_tax");
+var netbill = document.getElementsByClassName("net_total");
+
+function updateField(item, val) {
+    let v = parseFloat(val).toFixed(2);
+    for (var i of item){
+        try {
+            i.innerText = v;
+            i.value = v;
+        } catch {
+            i.value = v;
+        }
+    }
+    return v;
+}
 
 function updateBill(event) {
-    console.log("hey", parseInt(event.target.value))
-    if(event.target.id == "general") {
+    if(event.target.id == "id_general") {
         gbill.innerText = event.target.valueAsNumber;
-    } else if (event.target.id == "senior") {
+    } else if (event.target.id == "id_senior") {
         sbill.innerText = event.target.valueAsNumber;
     } else {
         cbill.innerText = event.target.valueAsNumber;
     }
-    let total_tax = (parseFloat(grate.innerText)*parseFloat(general.value) +
-        parseFloat(srate.innerText)*parseFloat(senior.value) +
-        parseFloat(crate.innerText)*parseFloat(children.value))
-    totalbill.innerText = total_tax.toFixed(2);
-    taxbill.innerText = (0.135 * parseFloat(totalbill.innerText)).toFixed(2);
-    netbill.innerText = (parseFloat(taxbill.innerText) + total_tax).toFixed(2);
+    let total_b4_tax = (parseFloat(grate.innerText)*parseFloat(general.value) +
+    parseFloat(srate.innerText)*parseFloat(senior.value) +
+    parseFloat(crate.innerText)*parseFloat(children.value)).toFixed(2);
+    let tb = updateField(totalbill, total_b4_tax);
+    let tt = updateField(taxbill, (0.135 * tb));
+    updateField(netbill, (parseFloat(tb) + parseFloat(tt)));
+
 }
 
 general.addEventListener("change", updateBill);

@@ -2,7 +2,7 @@ import re
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import SCategory, ShowUser, Ticket
+from .models import Order, SCategory, ShowUser
 from django.forms import ModelForm, ValidationError
 
 
@@ -57,22 +57,42 @@ opts = SCategory.opts
 
 
 class BookTicketForm(ModelForm):
-    general = forms.IntegerField(required=False, min_value=0)
-    senior = forms.IntegerField(required=False, min_value=0)
-    children = forms.IntegerField(required=False, min_value=0)
-    seat = forms.CharField(widget=forms.TextInput(attrs={"id": "selected-seat"}))
-    creditcard = forms.CharField()
-    seccode = forms.CharField()
+    seat = forms.CharField(
+        initial="", widget=forms.TextInput(attrs={"readonly": "readonly"})
+    )
+    creditcard = forms.CharField(
+        initial="9999888877776666", min_length=16, max_length=16
+    )
+    seccode = forms.CharField(initial="999", min_length=3, max_length=3)
     expdate = forms.DateField(
         initial="2029-06",
         widget=forms.DateInput(format="%Y-%m"),
         input_formats=["%Y-%m"],
     )
-    postalcode = forms.CharField()
+    postalcode = forms.CharField(initial="M9Z1P4", min_length=6, max_length=6)
+    total_b4_tax = forms.FloatField(
+        initial=0.00,
+        template_name="app/cxfloat.html",
+        widget=forms.TextInput(attrs={"readonly": "readonly", "id": "total_b4_tax"}),
+    )
+    total_tax = forms.FloatField(
+        initial=0.00,
+        template_name="app/cxfloat.html",
+        widget=forms.TextInput(attrs={"readonly": "readonly", "id": "total_tax"}),
+    )
+    net_total = forms.FloatField(
+        initial=0.00,
+        template_name="app/cxfloat.html",
+        widget=forms.TextInput(attrs={"readonly": "readonly", "id": "net_total"}),
+    )
+    general = forms.IntegerField(initial=0, min_value=0, max_value=25)
+    senior = forms.IntegerField(initial=0, min_value=0, max_value=25)
+    children = forms.IntegerField(initial=0, min_value=0, max_value=25)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["expdate"].widget.input_type = "month"
+        self.fields["seccode"].widget.input_type = "password"
 
     def clean_expdate(self):
         data = self.cleaned_data.get("expdate").strftime("%Y-%m")
@@ -95,14 +115,5 @@ class BookTicketForm(ModelForm):
         raise ValidationError("Payment Failed")
 
     class Meta:
-        model = Ticket
-        fields = [
-            "seat",
-            "general",
-            "senior",
-            "children",
-            "creditcard",
-            "seccode",
-            "expdate",
-            "postalcode",
-        ]
+        model = Order
+        exclude = ["date_time", "user", "show"]

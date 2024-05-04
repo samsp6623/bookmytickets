@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
     AuthenticationForm,
 )
+from django.contrib.auth.models import Group
 from django.contrib.auth.views import (
     PasswordResetCompleteView,
     PasswordResetConfirmView,
@@ -12,7 +13,7 @@ from django.contrib.auth.views import (
 )
 
 from .forms import BookTicketForm, MyUserCreationForm
-from .models import Performance, Show, ShowUser, Multiplex, Tarrif, Ticket
+from .models import Order, Performance, Show, ShowUser, Multiplex, Tarrif, Ticket
 from django.db.models import QuerySet
 from django.db.models.base import Model as Model
 from django.shortcuts import get_object_or_404, redirect, render
@@ -103,19 +104,21 @@ def get_payment(form):
 
 
 def book_seat(request, form, show):
-    """Books ticket, creates the Ticket object in DB registers the booked seat
-    in respective Show.
-    """
+    """Books ticket in show, creates the Order object for ShowUser in DB"""
     booked_seat = form.cleaned_data["seat"].split(" ")
-    for i in [
-        form.cleaned_data["general"] if not None else 0,
-        form.cleaned_data["senior"] if not None else 0,
-        form.cleaned_data["children"] if not None else 0,
-    ]:
-        for j in range(i):
-            s = booked_seat.pop()
-            Ticket.objects.create(user=request.user, show=show, seat=s)
-            show.seats_occupied["seats"].append(s)
+    Order.objects.create(
+        user=request.user,
+        seat=form.cleaned_data["seat"],
+        show=show,
+        general=form.cleaned_data["general"],
+        senior=form.cleaned_data["senior"],
+        children=form.cleaned_data["children"],
+        total_b4_tax=form.cleaned_data["total_b4_tax"],
+        total_tax=form.cleaned_data["total_tax"],
+        net_total=form.cleaned_data["net_total"],
+    )
+    for st in booked_seat:
+        show.seats_occupied["seats"].append(st)
     show.save()
 
 
@@ -174,7 +177,9 @@ def signup(request):
             return render(request, "app/signup.html", {"form": form})
         username = form.cleaned_data["username"]
         password = form.cleaned_data["password1"]
-        ShowUser.objects.create_user(username, password=password)
+        g = Group.objects.get(id=4)
+        u = ShowUser.objects.create_user(username, password=password)
+        u.groups.add(g)
         return redirect("login")
     form = MyUserCreationForm()
     return render(request, "app/signup.html", context={"form": form})

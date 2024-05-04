@@ -7,6 +7,7 @@ from .models import (
     Tarrif,
     Performance,
     Ticket,
+    Order,
     SCategory,
 )
 
@@ -19,3 +20,4 @@ admin.site.register(Tarrif)
 admin.site.register(Performance)
 admin.site.register(Ticket)
 admin.site.register(SCategory)
+admin.site.register(Order)
