@@ -1,17 +1,15 @@
 {% include 'base.html' %} {% block content %}
 <main class="container-fluid">
-  <div class="myclass">
+  <div class="formclass">
     <article>
       <hgroup>
         <h2>User Profile</h2>
       </hgroup>
       <div class="profile">
-        <fieldset>
-          <form method="post">
-            {% csrf_token %} {{ form.as_p }}
-            <input type="submit" value="Update" />
-          </form>
-        </fieldset>
+        <form method="post">
+          {% csrf_token %} {{ form.as_p }}
+          <input type="submit" value="Update" />
+        </form>
       </div>
     </article>
   </div>

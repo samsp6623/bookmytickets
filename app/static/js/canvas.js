@@ -49,9 +49,9 @@ function getJSON(elid) {
 }
 
 
-var SIZE = window.innerWidth;
-canvas.width = 0.625 * SIZE;
-canvas.height = 0.35 * SIZE;
+var SIZE = canvas.parentElement.clientWidth;
+canvas.width = 0.75 * SIZE;
+canvas.height = 0.43 * SIZE;
 
 var ROW_NAME = "";
 var PREP_SEATS_LAYOUT = {}

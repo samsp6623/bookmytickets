@@ -5,6 +5,8 @@ body {
 canvas {
     border: 1px solid black;
     background: rgb(175, 163, 220);
+    margin: 0px auto;
+    display: block;
 }
 
 .myclass {
@@ -16,4 +18,8 @@ canvas {
 .perf {
     max-width: 12rem;
     margin: 15px;
+}
+.formclass {
+    margin: 0px auto;
+    width: 75%;
 }

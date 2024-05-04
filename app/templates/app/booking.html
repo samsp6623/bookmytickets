@@ -1,58 +1,58 @@
 {% include 'base.html' %} {% block content %} {% load static %}
-<main class="container-fluid">
-<form action="{% url 'book' show.id %}" method="POST">
-  {% csrf_token %}
-  <article>
-    <h2 class="mytitle">Select seat</h2>
-    <canvas></canvas>
-    <p id="seats-available" style="display: none">
-      {{ show.theater.seats_available }}
-    </p>
-    <p id="seats-occupied" style="display: none">{{ show.seats_occupied }}</p>
-    {{ form.seat.label_tag }}
-    {{ form.seat }}
-    {% if form.seat.errors %}
-        <small>{{form.seat.errors}}</small>
-    {% endif %}
-  </article>
-  <article>
-      <h2 class="mytitle">Select Tickets for</h2>
-      {% for i in form %}
-        {% if i == form.general or i == form.senior or i == form.children %}
-          {{ i.label_tag }}
-          {{ i }}
-          {% if i.errors %}
-              <small>{{i.errors}}</small>
+<div class="formclass">
+  <form action="{% url 'book' show.id %}" method="POST">
+    {% csrf_token %}
+    <article>
+      <h2 class="mytitle">Select seat</h2>
+      <canvas></canvas>
+      <p id="seats-available" style="display: none">
+        {{ show.theater.seats_available }}
+      </p>
+      <p id="seats-occupied" style="display: none">{{ show.seats_occupied }}</p>
+      {{ form.seat.label_tag }}
+      {{ form.seat }}
+      {% if form.seat.errors %}
+          <small>{{form.seat.errors}}</small>
+      {% endif %}
+    </article>
+    <article>
+        <h2 class="mytitle">Select Tickets for</h2>
+        {% for i in form %}
+          {% if i == form.general or i == form.senior or i == form.children %}
+            {{ i.label_tag }}
+            {{ i }}
+            {% if i.errors %}
+                <small>{{i.errors}}</small>
+            {% endif %}
           {% endif %}
+        {% endfor %}
+    </article>
+    <article>
+      <h2 class="mytitle">Review order</h2>
+      <h4>{{show.performance.name}}</h4>
+      <p>{{show.date_time }}</p>
+      {% for m in tarrif %}
+        <p>{{ m.seat_category}} Ticket(s): <b id="ticket_{{m.seat_category|lower}}">0</b> x $<b id="rate_{{m.seat_category|lower}}">{{ m.rate }}</b></p>
+      {% endfor %}
+      {{ form.total_b4_tax.as_field_group }}
+      {{ form.total_tax.as_field_group }}
+      {{ form.net_total.as_field_group }}
+    </article>
+    <article>
+      <h2>Payment Details</h2>
+      {% for i in form %}
+        {% if i == form.creditcard or i == form.seccode or i == form.expdate or i == form.postalcode %}
+            {{ i.label_tag }}
+            {{ i }}
+            {% if i.errors %}
+              <small>{{i.errors}}</small>
+            {% endif %}
         {% endif %}
       {% endfor %}
-  </article>
-  <article>
-    <h2 class="mytitle">Review order</h2>
-    <h4>{{show.performance.name}}</h4>
-    <p>{{show.date_time }}</p>
-    {% for m in tarrif %}
-      <p>{{ m.seat_category}} Ticket(s): <b id="ticket_{{m.seat_category|lower}}">0</b> x $<b id="rate_{{m.seat_category|lower}}">{{ m.rate }}</b></p>
-    {% endfor %}
-    {{ form.total_b4_tax.as_field_group }}
-    {{ form.total_tax.as_field_group }}
-    {{ form.net_total.as_field_group }}
-  </article>
-  <article>
-    <h2>Payment Details</h2>
-    {% for i in form %}
-      {% if i == form.creditcard or i == form.seccode or i == form.expdate or i == form.postalcode %}
-          {{ i.label_tag }}
-          {{ i }}
-          {% if i.errors %}
-            <small>{{i.errors}}</small>
-          {% endif %}
-      {% endif %}
-    {% endfor %}
-  </article>
-  <button type="submit">Submit</button>
-  <button>Cancel</button>
-</form>
-<script src="{% static 'js/canvas.js' %}"></script>
-</main>
+    </article>
+    <button type="submit">Submit</button>
+    <button>Cancel</button>
+  </form>
+  <script src="{% static 'js/canvas.js' %}"></script>
+</div>
 {% endblock %}
