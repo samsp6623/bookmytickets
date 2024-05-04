@@ -184,4 +184,28 @@ def test(request):
     data = dict()
     data["addr"] = request.META["REMOTE_ADDR"]
     data["host"] = request.META["REMOTE_HOST"]
+    data["http_user"] = request.META.get("HTTP_USER", "test")
+    data["HTTP_X_FORWARDED_FOR"] = request.META.get("HTTP_X_FORWARDED_FOR", "test")
+    data["X_FORWARDED_FOR"] = request.META.get("X_FORWARDED_FOR", "test")
+    data["HTTP_X_FORWARDED_FOR"] = request.META.get("HTTP_X_FORWARDED_FOR", "test")
+    data["HTTP_CLIENT_IP"] = request.META.get("HTTP_CLIENT_IP", "test")
+    data["HTTP_X_REAL_IP"] = request.META.get("HTTP_X_REAL_IP", "test")
+    data["HTTP_X_FORWARDED"] = request.META.get("HTTP_X_FORWARDED", "test")
+    data["HTTP_X_CLUSTER_CLIENT_IP"] = request.META.get(
+        "HTTP_X_CLUSTER_CLIENT_IP", "test"
+    )
+    data["HTTP_FORWARDED_FOR"] = request.META.get("HTTP_FORWARDED_FOR", "test")
+    data["HTTP_FORWARDED"] = request.META.get("HTTP_FORWARDED", "test")
+    data["HTTP_CF_CONNECTING_IP"] = request.META.get("HTTP_CF_CONNECTING_IP", "test")
+    data["X-CLIENT-IP"] = request.META.get("X-CLIENT-IP", "test")
+    data["X-REAL-IP"] = request.META.get("X-REAL-IP", "test")
+    data["X-CLUSTER-CLIENT-IP"] = request.META.get("X-CLUSTER-CLIENT-IP", "test")
+    data["X_FORWARDED"] = request.META.get("X_FORWARDED", "test")
+    data["FORWARDED_FOR"] = request.META.get("FORWARDED_FOR", "test")
+    data["CF-CONNECTING-IP"] = request.META.get("CF-CONNECTING-IP", "test")
+    data["TRUE-CLIENT-IP"] = request.META.get("TRUE-CLIENT-IP", "test")
+    data["FASTLY-CLIENT-IP"] = request.META.get("FASTLY-CLIENT-IP", "test")
+    data["FORWARDED"] = request.META.get("FORWARDED", "test")
+    data["CLIENT-IP"] = request.META.get("CLIENT-IP", "test")
+    data["REMOTE_ADDR"] = request.META.get("REMOTE_ADDR", "test")
     return render(request, "app/test.html", {"data": data})

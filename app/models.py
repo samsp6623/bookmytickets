@@ -128,28 +128,20 @@ class Show(models.Model):
 class Tarrif(models.Model):
     show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
     seat_category = models.ForeignKey(SCategory, on_delete=models.DO_NOTHING)
-    theater = models.ForeignKey(Theater, on_delete=models.DO_NOTHING)
     rate = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return (
-            "$"
-            + str(self.rate)
-            + " "
-            + str(self.seat_category)
-            + " "
-            + str(self.show)
-            + " "
-            + str(self.theater)
+            "$" + str(self.rate) + " " + str(self.seat_category) + " " + str(self.show)
         )
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["show", "theater", "seat_category"],
-                name="uni_to_theater_show",
+                fields=["show", "seat_category"],
+                name="uni_to_show_seatcategory",
                 violation_error_message="""The tarrif rate for selected Show 
-                and Theater has been defined already.""",
+                has been defined already.""",
             )
         ]
 
