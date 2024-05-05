@@ -175,6 +175,22 @@ def signup(request):
     return render(request, "app/signup.html", context={"form": form})
 
 
+def p400(request, exception=None):
+    return render(request, "app/400.html")
+
+
+def p403(request, exception=None):
+    return render(request, "app/404.html")
+
+
+def p404(request, exception=None):
+    return render(request, "app/404.html")
+
+
+def p500(request, exception=None):
+    return render(request, "app/500.html")
+
+
 def test(request):
     data = dict()
     data["HTTP_X_FORWARDED_FOR"] = request.META.get("HTTP_X_FORWARDED_FOR", "test")

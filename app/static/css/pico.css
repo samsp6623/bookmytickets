@@ -267,7 +267,7 @@ details summary[role=button]:not(.outline)::after {
   --pico-h4-color: #4d535e;
   --pico-h5-color: #5c6370;
   --pico-h6-color: #646b79;
-  --pico-mark-background-color: #fde7c0;
+  --pico-mark-background-color: rgb(131, 82, 197);
   --pico-mark-color: #0f1114;
   --pico-ins-color: #1d6a54;
   --pico-del-color: #883935;
@@ -387,7 +387,7 @@ details summary[role=button]:not(.outline)::after {
     --pico-h4-color: #8f7ece;
     --pico-h5-color: #8f7ece;
     --pico-h6-color: #8f7ece;
-    --pico-mark-background-color: #014063;
+    --pico-mark-background-color: #8f7ece;
     --pico-mark-color: #fff;
     --pico-ins-color: #62af9a;
     --pico-del-color: #ce7e7b;
@@ -510,7 +510,7 @@ details summary[role=button]:not(.outline)::after {
   --pico-h4-color: #8f7ece;
   --pico-h5-color: #8f7ece;
   --pico-h6-color: #8f7ece;
-  --pico-mark-background-color: #014063;
+  --pico-mark-background-color: #8f7ece;
   --pico-mark-color: #fff;
   --pico-ins-color: #62af9a;
   --pico-del-color: #ce7e7b;

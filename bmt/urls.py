@@ -20,8 +20,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from app import views
+
 urlpatterns = [
     path("myportal/", admin.site.urls),
     path("", include("app.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+handler400 = views.p400
+handler403 = views.p403
+handler404 = views.p404
+handler500 = views.p500
