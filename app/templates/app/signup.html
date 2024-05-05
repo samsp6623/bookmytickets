@@ -1,7 +1,9 @@
 {% include 'base.html' %}
-<form method="post" action="/signup/">
-    {% csrf_token %}
-    {{ form }}
-    <button>Submit</button>
-    <button type="reset">Reset</button>
-</form>
+<main class="container-fluid formclass">
+    <form method="post" action="/signup/">
+        {% csrf_token %}
+        {{ form }}
+        <button>Submit</button>
+        <button type="reset">Reset</button>
+    </form>
+</main>

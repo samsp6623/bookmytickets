@@ -1,6 +1,5 @@
 body {
-    margin: 0;
-    padding: 15px 5px 0px 5px;
+    margin: 0px auto;
 }
 canvas {
     border: 1px solid black;
@@ -19,7 +18,51 @@ canvas {
     max-width: 12rem;
     margin: 15px;
 }
-.formclass {
+
+.message {
     margin: 0px auto;
-    width: 75%;
+    padding: 10px 10px;
+    width: max(250px, 35vw);
+    border: 1px solid #190928;
+    border-radius: var(--pico-border-radius);
+    background-color: #db90e8;
+    align-content: center;
+    text-align: center;
+}
+
+@media only screen and (max-width: 2400px) {
+    .formclass {
+        width: 50%;
+        margin: 0px auto;
+    }
+    .inlinefields {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr 3fr 1fr 3fr;
+        align-items: center;
+        justify-items: center;
+        grid-gap: 10px;
+        input {
+            min-width: 125px;
+            max-width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width: 770px) {
+    .formclass {
+        width: 75%;
+        margin: 0px auto;
+    }
+    .inlinefields {
+        grid-template-columns: 0.3fr 0.7fr;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .inlinefields {
+        input {
+            min-width: 135px;
+            max-width: 100%;
+        }
+    }
 }

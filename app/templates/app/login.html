@@ -1,21 +1,13 @@
 {% include 'base.html' %}
 {% block content %}
-<main class="container-fluid">
-    <div class="grid">
-        <div></div>
-        <div>
-            <h2 class="mytitle">Login</h2>
-            <form action="." method="POST">
-                {% csrf_token %}
-                <fieldset>
-                    {{ form.as_p }}
-                    <small><a href="/password_reset">Forgot Password</a></small>
-                </fieldset>
-                <input type="submit" value="Submit"/>
-                <input type="reset" value="Reset"/>
-            </form>
-        </div>
-        <div></div>
-</div>
+<main class="container-fluid formclass">
+    <h2 class="mytitle">Login</h2>
+    <form action="." method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <small><a href="/password_reset">Forgot Password</a></small>
+        <input type="submit" value="Submit"/>
+        <input type="reset" value="Reset"/>
+    </form>
 </main>
 {% endblock %}

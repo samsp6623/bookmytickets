@@ -63,13 +63,23 @@ class BookTicketForm(ModelForm):
     creditcard = forms.CharField(
         initial="9999888877776666", min_length=16, max_length=16
     )
-    seccode = forms.CharField(initial="999", min_length=3, max_length=3)
+    seccode = forms.CharField(
+        initial="999",
+        min_length=3,
+        max_length=3,
+        widget=forms.TextInput(attrs={"class": "fieldinput"}),
+    )
     expdate = forms.DateField(
         initial="2029-06",
-        widget=forms.DateInput(format="%Y-%m"),
+        widget=forms.DateInput(format="%Y-%m", attrs={"class": "fieldinput"}),
         input_formats=["%Y-%m"],
     )
-    postalcode = forms.CharField(initial="M9Z1P4", min_length=6, max_length=6)
+    postalcode = forms.CharField(
+        initial="M9Z1P4",
+        min_length=6,
+        max_length=6,
+        widget=forms.TextInput(attrs={"class": "fieldinput"}),
+    )
     total_b4_tax = forms.FloatField(
         initial=0.00,
         template_name="app/cxfloat.html",
@@ -85,9 +95,24 @@ class BookTicketForm(ModelForm):
         template_name="app/cxfloat.html",
         widget=forms.TextInput(attrs={"readonly": "readonly", "id": "net_total"}),
     )
-    general = forms.IntegerField(initial=0, min_value=0, max_value=25)
-    senior = forms.IntegerField(initial=0, min_value=0, max_value=25)
-    children = forms.IntegerField(initial=0, min_value=0, max_value=25)
+    general = forms.IntegerField(
+        initial=0,
+        min_value=0,
+        max_value=25,
+        widget=forms.NumberInput(attrs={"class": "fieldinput"}),
+    )
+    senior = forms.IntegerField(
+        initial=0,
+        min_value=0,
+        max_value=25,
+        widget=forms.NumberInput(attrs={"class": "fieldinput"}),
+    )
+    children = forms.IntegerField(
+        initial=0,
+        min_value=0,
+        max_value=25,
+        widget=forms.NumberInput(attrs={"class": "fieldinput"}),
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

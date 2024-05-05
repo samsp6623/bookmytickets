@@ -55,8 +55,15 @@
             {% endif %}
         </ul>
     </nav>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="message">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
     {% block content %}
     {% endblock %}
-    <script src="{% static  'js/custom.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
 </body>
 </html>

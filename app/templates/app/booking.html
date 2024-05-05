@@ -17,15 +17,17 @@
     </article>
     <article>
         <h2 class="mytitle">Select Tickets for</h2>
-        {% for i in form %}
-          {% if i == form.general or i == form.senior or i == form.children %}
-            {{ i.label_tag }}
-            {{ i }}
-            {% if i.errors %}
-                <small>{{i.errors}}</small>
+        <div class="inlinefields">
+          {% for i in form %}
+            {% if i == form.general or i == form.senior or i == form.children %}
+              {{ i.label_tag }}
+              {{ i }}
+              {% if i.errors %}
+                  <small>{{i.errors}}</small>
+              {% endif %}
             {% endif %}
-          {% endif %}
-        {% endfor %}
+          {% endfor %}
+        </div>
     </article>
     <article>
       <h2 class="mytitle">Review order</h2>
@@ -40,15 +42,19 @@
     </article>
     <article>
       <h2>Payment Details</h2>
-      {% for i in form %}
-        {% if i == form.creditcard or i == form.seccode or i == form.expdate or i == form.postalcode %}
-            {{ i.label_tag }}
-            {{ i }}
-            {% if i.errors %}
-              <small>{{i.errors}}</small>
-            {% endif %}
+      {{ form.creditcard.label_tag }}
+      {{ form.creditcard }}
+      <div class="inlinefields">
+        {% for i in form %}
+        {% if i == form.seccode or i == form.expdate or i == form.postalcode %}
+          {{ i.label_tag }}
+          {{ i }}
+          {% if i.errors %}
+            <small>{{i.errors}}</small>
+          {% endif %}
         {% endif %}
-      {% endfor %}
+        {% endfor %}
+      </div>
     </article>
     <button type="submit">Submit</button>
     <button>Cancel</button>

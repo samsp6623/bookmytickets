@@ -170,7 +170,7 @@ class Ticket(models.Model):
 
 
 class Order(models.Model):
-    date_time = models.DateTimeField(auto_now=True)
+    date_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(ShowUser, on_delete=models.DO_NOTHING)
     seat = models.CharField(max_length=256)
     show = models.ForeignKey(Show, on_delete=models.DO_NOTHING)
