@@ -75,7 +75,7 @@ class BookTicketForm(ModelForm):
         input_formats=["%Y-%m"],
     )
     postalcode = forms.CharField(
-        initial="M9Z1P4",
+        initial="380001",
         min_length=6,
         max_length=6,
         widget=forms.TextInput(attrs={"class": "fieldinput"}),
@@ -133,7 +133,7 @@ class BookTicketForm(ModelForm):
 
     def clean_postalcode(self):
         if (
-            re.fullmatch("([A-Z][0-9]){3}", self.cleaned_data.get("postalcode", "L2K"))
+            re.fullmatch("([0-9]){6}", str(self.cleaned_data.get("postalcode", 380001)))
             is not None
         ):
             return self.cleaned_data["postalcode"]

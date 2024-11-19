@@ -20,7 +20,7 @@ def get_payment(form):
     cc = form.cleaned_data["creditcard"] == "9999888877776666"
     secc = form.cleaned_data["seccode"] == "999"
     expd = form.cleaned_data["expdate"] == "2029-06"
-    pcode = form.cleaned_data["postalcode"] == "M9Z1P4"
+    pcode = form.cleaned_data["postalcode"] == "380001"
     if all([cc, secc, expd, pcode]):
         return True
     else:

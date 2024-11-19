@@ -19,12 +19,23 @@ docker compose watch backend
 # Environment Variables to set in the Web App Server
 
 for Django
-ALLOWED_HOST
-SECRET_KEY
+```
+export ALLOWED_HOST="localhost"
+export SECRET_KEY="secret here"
+export DJANGO_SETTINGS_MODULE="/path/to/bmt.prod_settings"
+```
 
-for postgres database
+# for postgres database
+
 NAME
 USER
 HOST
 PORT
 PASSWORD
+
+# to run on the local machine (after setting env variable)
+
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py collectstatic
+python3 manage.py runserver
