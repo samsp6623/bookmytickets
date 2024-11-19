@@ -39,6 +39,7 @@ coverage.xml
 cover/
 
 # Translations
+.DS_Store
 *.mo
 *.pot
 
