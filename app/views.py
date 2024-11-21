@@ -163,9 +163,13 @@ def signup(request):
             return render(request, "app/signup.html", {"form": form})
         username = form.cleaned_data["username"]
         password = form.cleaned_data["password1"]
-        g = Group.objects.get(id=4)
-        u = ShowUser.objects.create_user(username, password=password)
-        u.groups.add(g)
+        u = ShowUser.objects.create_user(
+            username,
+            password=password,
+            is_active=True,
+            is_staff=False,
+            is_superuser=False,
+        )
         messages.success(
             request,
             "You have Successfully created your account with us.",

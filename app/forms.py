@@ -44,9 +44,37 @@ class ShowUserForms(ModelForm):
         ]
 
 
-class MyUserCreationForm(UserCreationForm):
+class MyUserCreationForm(ModelForm):
+    username = forms.CharField()
+    password1 = forms.CharField(
+        label="Password", widget=forms.TextInput(attrs={"type": "password"})
+    )
+    password2 = forms.CharField(
+        label="Confirm by Re-entering Password",
+        widget=forms.TextInput(attrs={"type": "password"}),
+    )
+
     def clean_username(self):
         return is_valid_str(self["username"].value())
+
+    def clean_password1(self):
+        data = self.cleaned_data["password1"]
+        if (
+            re.search("[a-zA-Z]", data)
+            and re.search(r"[!@#$]", data)
+            and re.search("[0-9]", data)
+        ):
+            return data
+        raise ValidationError(
+            "Make sure to use alphabetes, numbers and special character from `!@#$`"
+        )
+
+    def clean_password2(self):
+        data1 = self.data["password1"]
+        data2 = self.cleaned_data["password2"]
+        if data1 == data2:
+            return data2
+        raise ValidationError("Password does not match! try again!")
 
     class Meta:
         model = ShowUser
