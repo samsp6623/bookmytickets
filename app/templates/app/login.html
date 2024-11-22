@@ -5,9 +5,9 @@
     <form action="." method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <small><a href="/password_reset">Forgot Password</a></small>
-        <input type="submit" value="Submit"/>
-        <input type="reset" value="Reset"/>
+        <small><a href="/password_reset">Reset Password</a></small>
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
     </form>
 </main>
 {% endblock %}

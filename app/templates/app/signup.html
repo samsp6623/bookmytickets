@@ -1,9 +1,12 @@
 {% include 'base.html' %}
+{% block content %}
 <main class="container-fluid formclass">
+    <h2 class="mytitle">Sign Up</h2>
     <form method="post" action="/signup/">
         {% csrf_token %}
         {{ form }}
-        <button>Submit</button>
-        <button type="reset">Reset</button>
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
     </form>
 </main>
+{% endblock %}
