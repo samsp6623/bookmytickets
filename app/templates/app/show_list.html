@@ -1,4 +1,4 @@
-{% include 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
 <main class="container-fluid">
     <h2 class="mytitle">Select shows currently running in Cinema</h2>
@@ -6,7 +6,7 @@
     <div class="myclass">
         {% for show in object_list %}
         <article>
-                <div class="perf">
+            <div class="perf">
                 <img src="{{show.performance.cover_picture.url}}" alt="Performance Cover Page"></img>
                 <p><b>{{ show.date_time }}</b></p>
                 <p>{{ show.theater.multiplex.address }}</p>

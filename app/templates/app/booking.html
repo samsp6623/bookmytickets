@@ -1,4 +1,4 @@
-{% include 'base.html' %} {% block content %} {% load static %}
+{% extends "base.html" %} {% block content %} {% load static %}
 <div class="formclass">
   <form action="{% url 'book' show.id %}" method="POST">
     {% csrf_token %}
