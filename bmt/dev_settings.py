@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False)
 
-ALLOWED_HOSTS = ["py2s.pythonanywhere.com"]
+ALLOWED_HOSTS = ["py2s.pythonanywhere.com", "localhost"]
 
 # Application definition
 

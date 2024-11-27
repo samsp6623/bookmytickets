@@ -3,8 +3,26 @@
     {% for i in object_list %}
     <article>
         <h3>{{i.show.performance.name}}</h3>
-        <p>{{i.date_time}}</p>
-        <p>{{i.seat}}</p>
+        <small>{{i.date_time}}</small>
+        <p></p>
+        <b>Booked Seats:</b>
+        {{i.seat}}
+        <br />
+        {% if i.general %}
+        <b>General:</b> {{i.general}}
+        {% endif %}
+        {% if i.senior %}
+        <b>Senior:</b> {{i.senior}}
+        {% endif %}
+        {% if i.children %}
+        <b>Children:</b> {{i.children}}
+        {% endif %}
+        <br />
+        <small>Total before Tax:</small> ₹{{i.total_b4_tax}}
+        <br />
+        <small>Total Tax:</small> ₹{{i.total_tax}}
+        <br />
+        <b>Total:</b> ₹{{i.net_total}}
     </article>
     {% endfor %}
 </div>

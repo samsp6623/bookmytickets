@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html data-theme="light">
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Get ready for &#127917;&#127916;&#127871; time!</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     {% load static %}
-    <link
-    rel="stylesheet"
-    href="{% static 'css/pico.css' %}"
-    />
-    <link
-    rel="stylesheet"
-    href="{% static 'css/pico.colors.css' %}"
-    />
+    <link rel="stylesheet" href="{% static 'css/pico.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pico.colors.css' %}" />
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <link type="text/css" rel="stylesheet" href="{% static  'css/custom.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <nav>
         <ul>
@@ -37,7 +35,7 @@
             </li>
             {% if request.user.is_authenticated %}
             <li>
-                <a href="/pastorders/">Past Orders</a>                
+                <a href="/pastorders/">Past Orders</a>
             </li>
             <li>
                 <a href="{% url 'profile' request.user %}">Profile</a>
@@ -56,14 +54,16 @@
         </ul>
     </nav>
     {% if messages %}
-        {% for message in messages %}
-        <div class="message">
-            {{ message }}
-        </div>
-        {% endfor %}
+    {% for message in messages %}
+    <div class="message">
+        {{ message }}
+    </div>
+    {% endfor %}
     {% endif %}
     {% block content %}
     {% endblock %}
+    <small>.vikrants0123. at .outlook. dot .com.</small>
     <script src="{% static 'js/custom.js' %}"></script>
 </body>
+
 </html>

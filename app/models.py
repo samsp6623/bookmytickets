@@ -135,7 +135,7 @@ class Tarrif(models.Model):
 
     def __str__(self):
         return (
-            "$" + str(self.rate) + " " + str(self.seat_category) + " " + str(self.show)
+            "₹" + str(self.rate) + " " + str(self.seat_category) + " " + str(self.show)
         )
 
     class Meta:

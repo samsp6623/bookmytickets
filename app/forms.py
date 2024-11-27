@@ -110,6 +110,7 @@ class BookTicketForm(ModelForm):
     )
     total_b4_tax = forms.FloatField(
         initial=0.00,
+        label="Total before Tax",
         template_name="app/cxfloat.html",
         widget=forms.TextInput(attrs={"readonly": "readonly", "id": "total_b4_tax"}),
     )

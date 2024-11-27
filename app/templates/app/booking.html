@@ -12,29 +12,30 @@
       {{ form.seat.label_tag }}
       {{ form.seat }}
       {% if form.seat.errors %}
-          <small>{{form.seat.errors}}</small>
+      <small>{{form.seat.errors}}</small>
       {% endif %}
     </article>
     <article>
-        <h2 class="mytitle">Select Tickets for</h2>
-        <div class="inlinefields">
-          {% for i in form %}
-            {% if i == form.general or i == form.senior or i == form.children %}
-              {{ i.label_tag }}
-              {{ i }}
-              {% if i.errors %}
-                  <small>{{i.errors}}</small>
-              {% endif %}
-            {% endif %}
-          {% endfor %}
-        </div>
+      <h2 class="mytitle">Select Tickets for</h2>
+      <div class="inlinefields">
+        {% for i in form %}
+        {% if i == form.general or i == form.senior or i == form.children %}
+        {{ i.label_tag }}
+        {{ i }}
+        {% if i.errors %}
+        <small>{{i.errors}}</small>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+      </div>
     </article>
     <article>
       <h2 class="mytitle">Review order</h2>
       <h4>{{show.performance.name}}</h4>
       <p>{{show.date_time }}</p>
       {% for m in tarrif %}
-        <p>{{ m.seat_category}} Ticket(s): <b id="ticket_{{m.seat_category|lower}}">0</b> x $<b id="rate_{{m.seat_category|lower}}">{{ m.rate }}</b></p>
+      <p>{{ m.seat_category}} Ticket(s): <b id="ticket_{{m.seat_category|lower}}">0</b> x ₹<b
+          id="rate_{{m.seat_category|lower}}">{{ m.rate }}</b></p>
       {% endfor %}
       {{ form.total_b4_tax.as_field_group }}
       {{ form.total_tax.as_field_group }}
@@ -47,11 +48,11 @@
       <div class="inlinefields">
         {% for i in form %}
         {% if i == form.seccode or i == form.expdate or i == form.postalcode %}
-          {{ i.label_tag }}
-          {{ i }}
-          {% if i.errors %}
-            <small>{{i.errors}}</small>
-          {% endif %}
+        {{ i.label_tag }}
+        {{ i }}
+        {% if i.errors %}
+        <small>{{i.errors}}</small>
+        {% endif %}
         {% endif %}
         {% endfor %}
       </div>
