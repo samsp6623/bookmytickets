@@ -27,19 +27,32 @@ def get_payment(form):
         return False
 
 
-def book_seat(request, form, show):
+def book_seat(request, form, show, tarrif):
     """Books ticket in show, creates the Order object for ShowUser in DB"""
+    general = form.cleaned_data["general"]
+    senior = form.cleaned_data["senior"]
+    children = form.cleaned_data["children"]
     booked_seat = form.cleaned_data["seat"].split(" ")
+    total_b4_tax = 0
+    for tar in tarrif.values_list():
+        if tar[2] == 1:
+            total_b4_tax += int(tar[3] * general)
+        elif tar[2] == 2:
+            total_b4_tax += int(tar[3] * senior)
+        elif tar[2] == 3:
+            total_b4_tax += int(tar[3] * children)
+    total_tax = round((total_b4_tax * 0.135), 2)
+    net_total = round((total_b4_tax + total_tax), 2)
     Order.objects.create(
         user=request.user,
         seat=form.cleaned_data["seat"],
         show=show,
-        general=form.cleaned_data["general"],
-        senior=form.cleaned_data["senior"],
-        children=form.cleaned_data["children"],
-        total_b4_tax=form.cleaned_data["total_b4_tax"],
-        total_tax=form.cleaned_data["total_tax"],
-        net_total=form.cleaned_data["net_total"],
+        general=general,
+        senior=senior,
+        children=children,
+        total_b4_tax=round(total_b4_tax, 2),
+        total_tax=total_tax,
+        net_total=net_total,
     )
     for st in booked_seat:
         show.seats_occupied["seats"].append(st)

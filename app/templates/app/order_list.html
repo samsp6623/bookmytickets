@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+
+{% block content %}
 <div class="formclass">
     {% for i in object_list %}
     <article>
@@ -26,3 +28,4 @@
     </article>
     {% endfor %}
 </div>
+{% endblock %}

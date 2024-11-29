@@ -11,7 +11,7 @@ SELECTED_SEAT_COLOR = "#553fa6"
 
 // class to represent seat in canvas
 class Seat {
-    constructor(x, y, width, height, label){
+    constructor(x, y, width, height, label) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -34,7 +34,7 @@ class Seat {
         context.fillRect(this.x, this.y, this.width, this.height);
     }
     isClicked(xmouse, ymouse) {
-        if ((this.x < xmouse && xmouse < (this.x+this.width)) && (this.y < ymouse && ymouse < (this.y+this.height))){
+        if ((this.x < xmouse && xmouse < (this.x + this.width)) && (this.y < ymouse && ymouse < (this.y + this.height))) {
             return this.label;
         } else {
             return null;
@@ -45,7 +45,7 @@ class Seat {
 // General method to get data from Document
 function getJSON(elid) {
     var i = document.getElementById(elid).innerText
-    return JSON.parse(i.replaceAll("'", '"'));    
+    return JSON.parse(i.replaceAll("'", '"'));
 }
 
 
@@ -70,18 +70,18 @@ for (var i = 0; i < schema["seats"].length; i++) {
 // get no of rows and cols to nicely  prepare layout
 var MAX_ROW = Object.keys(PREP_SEATS_LAYOUT).length
 var MAX_COL = 0;
-for (const [k,v] of Object.entries(PREP_SEATS_LAYOUT)) {
+for (const [k, v] of Object.entries(PREP_SEATS_LAYOUT)) {
     if (v.length > MAX_COL) {
         MAX_COL = v.length;
     }
 }
 
-var TWIDTH =canvas.width;
+var TWIDTH = canvas.width;
 var THEIGHT = canvas.height;
 
 
-var HEIGHT = THEIGHT*(0.7/MAX_ROW);
-var WIDTH = TWIDTH*(0.8/(MAX_COL-1));
+var HEIGHT = THEIGHT * (0.7 / MAX_ROW);
+var WIDTH = TWIDTH * (0.8 / (MAX_COL - 1));
 var FACTOR = 0.9;
 
 var THEATER_COLOR = "#8f7ece";
@@ -89,17 +89,17 @@ var THEATER_COLOR = "#8f7ece";
 // draws the theater
 // c.strokRect(0,0,100,100)
 ctx.fillStyle = THEATER_COLOR;
-ctx.fillRect(0.1*TWIDTH,0.01*THEIGHT, 0.8*TWIDTH, 0.1*THEIGHT)
+ctx.fillRect(0.1 * TWIDTH, 0.01 * THEIGHT, 0.8 * TWIDTH, 0.1 * THEIGHT)
 
 var j = 0;
 var SEATS = []
-for (const [k,v] of Object.entries(PREP_SEATS_LAYOUT)) {
-    for (var i =0; i<v.length; i++) {
+for (const [k, v] of Object.entries(PREP_SEATS_LAYOUT)) {
+    for (var i = 0; i < v.length; i++) {
         let a = new Seat(
-            (0.1*TWIDTH-(WIDTH/2)) + i*WIDTH,
-            0.30*THEIGHT + j*HEIGHT,
-            WIDTH*0.9,
-            HEIGHT*0.9,
+            (0.1 * TWIDTH - (WIDTH / 2)) + i * WIDTH,
+            0.30 * THEIGHT + j * HEIGHT,
+            WIDTH * 0.9,
+            HEIGHT * 0.9,
             v[i]
         )
         a.draw(ctx)
@@ -110,7 +110,7 @@ for (const [k,v] of Object.entries(PREP_SEATS_LAYOUT)) {
 
 var SELECTED_SEAT = []
 let it = document.getElementById("id_seat")
-canvas.addEventListener("click", function(event){
+canvas.addEventListener("click", function (event) {
     // Check if the seat was clicked
     var seat = SEATS.filter((s) => {
         if (s && s.isClicked(event.offsetX, event.offsetY) && !s.reserved) {
@@ -120,8 +120,8 @@ canvas.addEventListener("click", function(event){
         }
     })
     if (Boolean(seat[0])) {
-        if (SELECTED_SEAT.find((s) => s == seat[0])){
-            SELECTED_SEAT.splice(SELECTED_SEAT.findIndex((i) => i==seat[0]), 1);
+        if (SELECTED_SEAT.find((s) => s == seat[0])) {
+            SELECTED_SEAT.splice(SELECTED_SEAT.findIndex((i) => i == seat[0]), 1);
             seat[0].selected = false;
             seat[0].draw(ctx)
         } else {
@@ -142,17 +142,17 @@ var senior = document.getElementById("id_senior");
 var children = document.getElementById("id_children");
 
 const form = document.querySelector('form');
-form.addEventListener('submit', function(event) {
+form.addEventListener('submit', function (event) {
     gen = parseInt(general.value);
     sen = parseInt(senior.value);
     cld = parseInt(children.value);
-    if ((gen+sen+cld) != SELECTED_SEAT.length) {
+    if ((gen + sen + cld) != SELECTED_SEAT.length) {
         alert("Please make sure that seats selected and number of guests are same.")
-        event. preventDefault();
+        event.preventDefault();
     }
     if (SELECTED_SEAT.length == 0) {
         alert("Atleast one ticket has to be selected.")
-        event. preventDefault();
+        event.preventDefault();
     }
 })
 var grate = document.getElementById("rate_general");
@@ -161,34 +161,27 @@ var crate = document.getElementById("rate_children");
 var gbill = document.getElementById("ticket_general");
 var sbill = document.getElementById("ticket_senior");
 var cbill = document.getElementById("ticket_children");
-var totalbill = document.getElementsByClassName("total_b4_tax");
-var taxbill = document.getElementsByClassName("total_tax");
-var netbill = document.getElementsByClassName("net_total");
+var totalbill = document.getElementById("total_b4_tax");
+var taxbill = document.getElementById("total_tax");
+var netbill = document.getElementById("net_total");
 
 function updateField(item, val) {
     let v = parseFloat(val).toFixed(2);
-    for (var i of item){
-        try {
-            i.innerText = v;
-            i.value = v;
-        } catch {
-            i.value = v;
-        }
-    }
+    item.innerText = v;
     return v;
 }
 
 function updateBill(event) {
-    if(event.target.id == "id_general") {
+    if (event.target.id == "id_general") {
         gbill.innerText = event.target.valueAsNumber;
     } else if (event.target.id == "id_senior") {
         sbill.innerText = event.target.valueAsNumber;
     } else {
         cbill.innerText = event.target.valueAsNumber;
     }
-    let total_b4_tax = (parseFloat(grate.innerText)*parseFloat(general.value) +
-    parseFloat(srate.innerText)*parseFloat(senior.value) +
-    parseFloat(crate.innerText)*parseFloat(children.value)).toFixed(2);
+    let total_b4_tax = (parseFloat(grate.innerText) * parseFloat(general.value) +
+        parseFloat(srate.innerText) * parseFloat(senior.value) +
+        parseFloat(crate.innerText) * parseFloat(children.value)).toFixed(2);
     let tb = updateField(totalbill, total_b4_tax);
     let tt = updateField(taxbill, (0.135 * tb));
     updateField(netbill, (parseFloat(tb) + parseFloat(tt)));

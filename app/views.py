@@ -103,7 +103,7 @@ def booking(request, *args, **kwargs):
     if request.method == "POST":
         form = BookTicketForm(request.POST)
         if form.is_valid() and get_payment(form):
-            book_seat(request, form, show)
+            book_seat(request, form, show, tarrif)
             messages.success(request, "You have Successfully booked your ticket.")
             return redirect("home")
         return render(
@@ -120,9 +120,7 @@ class PastTicketListsViews(ListView):
     paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Any]:
-        return (
-            super().get_queryset().filter(user=self.request.user).order_by("-date_time")
-        )
+        return self.model.objects.filter(user=self.request.user).order_by("-date_time")
 
 
 def login_user(request):

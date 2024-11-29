@@ -1,7 +1,6 @@
 import re
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from .models import Order, SCategory, ShowUser
 from django.forms import ModelForm, ValidationError
 
@@ -110,19 +109,22 @@ class BookTicketForm(ModelForm):
     )
     total_b4_tax = forms.FloatField(
         initial=0.00,
+        disabled=True,
         label="Total before Tax",
         template_name="app/cxfloat.html",
-        widget=forms.TextInput(attrs={"readonly": "readonly", "id": "total_b4_tax"}),
+        widget=forms.TextInput(attrs={"id": "total_b4_tax"}),
     )
     total_tax = forms.FloatField(
         initial=0.00,
+        disabled=True,
         template_name="app/cxfloat.html",
-        widget=forms.TextInput(attrs={"readonly": "readonly", "id": "total_tax"}),
+        widget=forms.TextInput(attrs={"id": "total_tax"}),
     )
     net_total = forms.FloatField(
         initial=0.00,
+        disabled=True,
         template_name="app/cxfloat.html",
-        widget=forms.TextInput(attrs={"readonly": "readonly", "id": "net_total"}),
+        widget=forms.TextInput(attrs={"id": "net_total"}),
     )
     general = forms.IntegerField(
         initial=0,
