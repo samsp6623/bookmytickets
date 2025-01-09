@@ -2,8 +2,8 @@
 schema = getJSON("seats-available")
 seats_occ = getJSON("seats-occupied")["seats"]
 
-var canvas = document.querySelector("canvas")
-var ctx = canvas.getContext("2d")
+let canvas = document.querySelector("canvas")
+let ctx = canvas.getContext("2d")
 
 AVAILABLE_SEAT_COLOR = "#d0c8ea"
 OCCUPIED_SEAT_COLOR = "#8f7ece"
@@ -16,8 +16,8 @@ class Seat {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.reserved = false;
         this.label = label;
+        this.reserved = false;
         this.selected = false;
     }
     draw(context) {
@@ -44,19 +44,19 @@ class Seat {
 
 // General method to get data from Document
 function getJSON(elid) {
-    var i = document.getElementById(elid).innerText
+    let i = document.getElementById(elid).innerText
     return JSON.parse(i.replaceAll("'", '"'));
 }
 
 
-var SIZE = canvas.parentElement.clientWidth;
+let SIZE = canvas.parentElement.clientWidth;
 canvas.width = 0.75 * SIZE;
 canvas.height = 0.43 * SIZE;
 
-var ROW_NAME = "";
-var PREP_SEATS_LAYOUT = {}
+let ROW_NAME = "";
+let PREP_SEATS_LAYOUT = {}
 // creates the object to represent data friendlier format to render
-for (var i = 0; i < schema["seats"].length; i++) {
+for (let i = 0; i < schema["seats"].length; i++) {
     if (!Object.hasOwn(PREP_SEATS_LAYOUT, schema["seats"][i][0])) {
         ROW_NAME = schema["seats"][i][0];
         PREP_SEATS_LAYOUT[ROW_NAME] = [];
@@ -68,33 +68,33 @@ for (var i = 0; i < schema["seats"].length; i++) {
 
 
 // get no of rows and cols to nicely  prepare layout
-var MAX_ROW = Object.keys(PREP_SEATS_LAYOUT).length
-var MAX_COL = 0;
+let MAX_ROW = Object.keys(PREP_SEATS_LAYOUT).length
+let MAX_COL = 0;
 for (const [k, v] of Object.entries(PREP_SEATS_LAYOUT)) {
     if (v.length > MAX_COL) {
         MAX_COL = v.length;
     }
 }
 
-var TWIDTH = canvas.width;
-var THEIGHT = canvas.height;
+let TWIDTH = canvas.width;
+let THEIGHT = canvas.height;
 
 
-var HEIGHT = THEIGHT * (0.7 / MAX_ROW);
-var WIDTH = TWIDTH * (0.8 / (MAX_COL - 1));
-var FACTOR = 0.9;
+let HEIGHT = THEIGHT * (0.7 / MAX_ROW);
+let WIDTH = TWIDTH * (0.8 / (MAX_COL - 1));
+let FACTOR = 0.9;
 
-var THEATER_COLOR = "#8f7ece";
+let THEATER_COLOR = "#8f7ece";
 
 // draws the theater
 // c.strokRect(0,0,100,100)
 ctx.fillStyle = THEATER_COLOR;
 ctx.fillRect(0.1 * TWIDTH, 0.01 * THEIGHT, 0.8 * TWIDTH, 0.1 * THEIGHT)
 
-var j = 0;
-var SEATS = []
+let j = 0;
+let SEATS = []
 for (const [k, v] of Object.entries(PREP_SEATS_LAYOUT)) {
-    for (var i = 0; i < v.length; i++) {
+    for (let i = 0; i < v.length; i++) {
         let a = new Seat(
             (0.1 * TWIDTH - (WIDTH / 2)) + i * WIDTH,
             0.30 * THEIGHT + j * HEIGHT,
@@ -108,11 +108,11 @@ for (const [k, v] of Object.entries(PREP_SEATS_LAYOUT)) {
     j++;
 }
 
-var SELECTED_SEAT = []
+let SELECTED_SEAT = []
 let it = document.getElementById("id_seat")
 canvas.addEventListener("click", function (event) {
     // Check if the seat was clicked
-    var seat = SEATS.filter((s) => {
+    let seat = SEATS.filter((s) => {
         if (s && s.isClicked(event.offsetX, event.offsetY) && !s.reserved) {
             return s;
         } else {
@@ -137,9 +137,9 @@ canvas.addEventListener("click", function (event) {
     }
 })
 
-var general = document.getElementById("id_general");
-var senior = document.getElementById("id_senior");
-var children = document.getElementById("id_children");
+let general = document.getElementById("id_general");
+let senior = document.getElementById("id_senior");
+let children = document.getElementById("id_children");
 
 const form = document.querySelector('form');
 form.addEventListener('submit', function (event) {
@@ -155,15 +155,15 @@ form.addEventListener('submit', function (event) {
         event.preventDefault();
     }
 })
-var grate = document.getElementById("rate_general");
-var srate = document.getElementById("rate_senior");
-var crate = document.getElementById("rate_children");
-var gbill = document.getElementById("ticket_general");
-var sbill = document.getElementById("ticket_senior");
-var cbill = document.getElementById("ticket_children");
-var totalbill = document.getElementById("total_b4_tax");
-var taxbill = document.getElementById("total_tax");
-var netbill = document.getElementById("net_total");
+let grate = document.getElementById("rate_general");
+let srate = document.getElementById("rate_senior");
+let crate = document.getElementById("rate_children");
+let gbill = document.getElementById("ticket_general");
+let sbill = document.getElementById("ticket_senior");
+let cbill = document.getElementById("ticket_children");
+let totalbill = document.getElementById("total_b4_tax");
+let taxbill = document.getElementById("total_tax");
+let netbill = document.getElementById("net_total");
 
 function updateField(item, val) {
     let v = parseFloat(val).toFixed(2);

@@ -62,7 +62,124 @@
     {% endif %}
     {% block content %}
     {% endblock %}
-    <small>Vikkys</small>
+    {% if not request.COOKIES.userconsent %}
+    <div id="cookieconsent-container">
+        <form action="#" method="POST" id="cookieconsent">
+            {% csrf_token %}
+            <h3>🍪 Cookie Time! 🍪</h3>
+            <p> We use cookies to make your experience at App even better! 🎭</p>
+            <br />
+
+            <p>By clicking “Got It!” or continuing to browse our app, you’re accepting our use of cookies (no, not the
+                chocolate
+                chip ones, unfortunately 😅). Here's how we use them:
+            <table>
+                <tr>
+                    <td>
+                        <label for=""><b> Essential Cookies: </b>These are like the stage crew – they make sure
+                            everything works smoothly behind the scenes.
+                            Without them, the app wouldn’t be able to perform!</label>
+                    </td>
+                    <td>
+                        <input value="1" type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for=""><b>Performance Cookies: </b>We use these to check how well the app is doing. They
+                            help us
+                            improve
+                            the
+                            experience, so you
+                            can enjoy our digital theatre even more.</label>
+
+                    </td>
+                    <td>
+                        <input value="2" type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for=""><b>Functionality Cookies: </b>Think of these as the set designers. They remember
+                            your preferences,
+                            like your language or
+                            favorite settings, so you don’t have to keep telling us every time you return.</label>
+                    </td>
+                    <td>
+                        <input value="3" type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for=""><b>Analytics Cookies: </b>These help us see how you’re enjoying the show. We
+                            gather data
+                            to make
+                            the
+                            app better, so you’ll
+                            keep coming back for the encore. 🎤</label>
+
+                    </td>
+                    <td>
+                        <input value="4" type="checkbox">
+
+                    </td>
+
+                </tr>
+            </table>
+            💡 Remember: You can change your cookie preferences anytime via your browser settings if you're not
+            fully on
+            board.
+            But don't worry, the cookies we use are harmless — no magical powers or teleportation here, promise! 😉
+            </p>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <style>
+        #cookieconsent-container {
+            position: fixed;
+            bottom: 35px;
+            margin-top: 25px;
+            z-index: 3;
+            transform: translate(15%);
+            width: 75%;
+        }
+
+        #cookieconsent-container>form {
+            background-color: var(--pico-background-color);
+            box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
+            border: 2px solid;
+            border-color: rgba(144, 98, 202, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            color: var(--pico-primary);
+        }
+    </style>
+    <script>
+        let form = document.getElementById("cookieconsent");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            let choices = [];
+            Object.values(form).forEach(i => {
+                if (i.localName == "input" && !["hidden", undefined].includes(i.type) && i.checked) {
+                    choices.push(i.value);
+                }
+            });
+            document.cookie = `userconsent=${choices}; Max-Age=2592000; path=/; SameSite=strict; Secure;`;
+            document.getElementById("cookieconsent-container").style.display = "none";
+        })
+    </script>
+    {% endif %}
+    <footer>
+        <a href="/privacy-policy">Privacy Policy</a><a href="/cookie-policy">Cookie Policy</a>
+    </footer>
+    <style>
+        footer {
+            display: flex;
+            justify-content: space-around;
+            position: relative;
+            bottom: -35px;
+        }
+    </style>
     <script src="{% static 'js/custom.js' %}"></script>
 </body>
 

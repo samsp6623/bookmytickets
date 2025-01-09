@@ -1,3 +1,5 @@
+import pdb
+
 from typing import Any
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -63,14 +65,14 @@ class ShowListView(ListView):
                 super()
                 .get_queryset()
                 .filter(performance__slugfield=self.kwargs.get("slugfield", None))
-                .order_by("date_time")
+                .order_by("theater")
             )
         elif self.kwargs.get("pk", False):
             return (
                 super()
                 .get_queryset()
                 .filter(theater=self.kwargs["pk"])
-                .order_by("date_time")
+                .order_by("performance")
             )
 
 
@@ -197,3 +199,11 @@ def test(request):
     data = dict()
     data["HTTP_X_FORWARDED_FOR"] = request.META.get("HTTP_X_FORWARDED_FOR", "test")
     return render(request, "app/test.html", {"data": data})
+
+
+def privacy_policy(request):
+    return render(request, "privacy_policy.html")
+
+
+def cookie_policy(request):
+    return render(request, "cookie_policy.html")

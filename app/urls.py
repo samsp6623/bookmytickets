@@ -10,6 +10,8 @@ urlpatterns = [
     path("shows/book/<int:pk>", views.booking, name="book"),
     path("login/", views.login_user, name="login"),
     path("logout/", views.logout_user, name="logout"),
+    path("cookie-policy/", views.cookie_policy, name="cookie_policy"),
+    path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     path("signup/", views.signup, name="signup"),
     path("pastorders/", views.PastTicketListsViews.as_view(), name="past-orders"),
     path(
