@@ -62,10 +62,43 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "cookieconsent.cookieconsent_context",
             ],
         },
     },
 ]
+
+COOKIECONSENT = {
+    "title": "🍪 Cookie Time! 🍪",
+    "sub_title": "We use cookies to make your experience at App even better! 🎭",
+    "description": "By clicking “Got It!” or continuing to browse our app, you’re accepting our use of cookies (no, not the chocolate chip ones, unfortunately 😅). Here's how we use them:",
+    "final_note": "💡 Remember: You can change your cookie preferences anytime via your browser settings if you're not fully on board. But don't worry, the cookies we use are harmless — no magical powers or teleportation here, promise! 😉",
+    "options": [
+        {
+            "type": "Performance Cookies",
+            "description": "We use these to check how well the app is doing. They help us improve the experience, so you can enjoy our digital theatre even more.",
+            "category": 1,
+            "if_declined": "continue",
+        },
+        {
+            "type": "Functionality Cookies",
+            "description": "Think of these as the set designers. They remember your preferences, like your language or favorite settings, so you don’t have to keep telling us every time you return.",
+            "category": 2,
+            "if_declined": "request",
+            "redirect_path": "login",
+            "redirection_message": "Make sure to select appropriate cookie to continue further.",
+        },
+        {
+            "type": "Analytics Cookies",
+            "description": "These help us see how you’re enjoying the show. We gather data to make the app better, so you’ll keep coming back for the encore. 🎤",
+            "category": 3,
+            "if_declined": "abort",
+            "redirect_path": "login",
+            "redirection_message": "Your request can't be processed further because some cookies are not present.",
+        },
+    ],
+}
+
 
 WSGI_APPLICATION = "bmt.wsgi.application"
 
