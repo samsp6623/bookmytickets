@@ -93,7 +93,7 @@ COOKIECONSENT = {
             "description": "These help us see how you’re enjoying the show. We gather data to make the app better, so you’ll keep coming back for the encore. 🎤",
             "category": 3,
             "if_declined": "abort",
-            "redirect_path": "login",
+            "redirect_path": "signup",
             "redirection_message": "Your request can't be processed further because some cookies are not present.",
         },
     ],
