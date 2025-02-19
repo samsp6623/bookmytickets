@@ -1,12 +1,9 @@
-import pdb
-
 from typing import Any
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
     AuthenticationForm,
 )
-from django.contrib.auth.models import Group
 from django.contrib.auth.views import (
     PasswordResetCompleteView,
     PasswordResetConfirmView,
@@ -105,9 +102,7 @@ def booking(request, *args, **kwargs):
     if request.method == "POST":
         form = BookTicketForm(request.POST)
         if form.is_valid() and get_payment(form):
-            book_seat(request, form, show, tarrif)
-            messages.success(request, "You have Successfully booked your ticket.")
-            return redirect("home")
+            return book_seat(request, form, show, tarrif)
         return render(
             request, "app/booking.html", {"form": form, "show": show, "tarrif": tarrif}
         )

@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from functools import wraps
 from app.models import Order
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db import IntegrityError, transaction
 
 
 def users_content_only(func):
@@ -33,6 +36,16 @@ def book_seat(request, form, show, tarrif):
     senior = form.cleaned_data["senior"]
     children = form.cleaned_data["children"]
     booked_seat = form.cleaned_data["seat"].split(" ")
+    bticket = ""
+    for seat in booked_seat:
+        if seat in show.seats_occupied["seats"]:
+            bticket += seat + " "
+    if bticket:
+        messages.error(
+            request,
+            "Sorry tickets {bticket}are booked! Please choose some other seats.",
+        )
+        return redirect("book")
     total_b4_tax = 0
     for tar in tarrif.values_list():
         if tar[2] == 1:
@@ -43,17 +56,28 @@ def book_seat(request, form, show, tarrif):
             total_b4_tax += int(tar[3] * children)
     total_tax = round((total_b4_tax * 0.135), 2)
     net_total = round((total_b4_tax + total_tax), 2)
-    Order.objects.create(
-        user=request.user,
-        seat=form.cleaned_data["seat"],
-        show=show,
-        general=general,
-        senior=senior,
-        children=children,
-        total_b4_tax=round(total_b4_tax, 2),
-        total_tax=total_tax,
-        net_total=net_total,
-    )
-    for st in booked_seat:
-        show.seats_occupied["seats"].append(st)
-    show.save()
+    try:
+        with transaction.atomic():
+            Order.objects.create(
+                user=request.user,
+                seat=form.cleaned_data["seat"],
+                show=show,
+                general=general,
+                senior=senior,
+                children=children,
+                total_b4_tax=round(total_b4_tax, 2),
+                total_tax=total_tax,
+                net_total=net_total,
+            )
+            for st in booked_seat:
+                show.seats_occupied["seats"].append(st)
+            show.save()
+        messages.success(request, "You have Successfully booked your ticket.")
+        return redirect("home")
+    except IntegrityError as e:
+        print(f"Error {e} occured!")
+        messages.error(
+            request,
+            "Sorry your tickets are not booked! Please choose some other seats.",
+        )
+        return redirect("book")
