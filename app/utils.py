@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from functools import wraps
 from app.models import Order
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 
@@ -43,7 +43,7 @@ def book_seat(request, form, show, tarrif):
     if bticket:
         messages.error(
             request,
-            "Sorry tickets {bticket}are booked! Please choose some other seats.",
+            f"Sorry tickets {bticket}are booked! Please choose some other seats.",
         )
         return redirect("book")
     total_b4_tax = 0
@@ -78,6 +78,9 @@ def book_seat(request, form, show, tarrif):
         print(f"Error {e} occured!")
         messages.error(
             request,
-            "Sorry your tickets are not booked! Please choose some other seats.",
+            "Sorry your tickets are not booked! Please make sure if seats are still \
+                available or select other seat.",
         )
-        return redirect("book")
+        return render(
+            request, "app/booking.html", {"form": form, "show": show, "tarrif": tarrif}
+        )
